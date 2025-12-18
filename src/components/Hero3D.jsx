@@ -26,8 +26,8 @@ function Robo({ scale = 0.9, position = [0, -0.8, 0] }) {
     const targetYaw = mouse.x * 0.9;    // left/right look
     const targetPitch = -mouse.y * 0.5; // so down = look down, up = look up
 
-    headRef.current.rotation.y += (targetYaw - headRef.current.rotation.y) * 0.15;
-    headRef.current.rotation.x += (targetPitch - headRef.current.rotation.x) * 0.15;
+    headRef.current.rotation.y += (targetYaw - headRef.current.rotation.y) * 0.02;
+    headRef.current.rotation.x += (targetPitch - headRef.current.rotation.x) * 0.02;
   });
 
   return (
@@ -39,11 +39,26 @@ function Robo({ scale = 0.9, position = [0, -0.8, 0] }) {
   );
 }
 
-// Wrap robot in a group that keeps it slightly tilted upright
-// Body no longer follows the cursor – only the head moves
+// Wrap robot in a group that stays slightly tilted upright
+// and rotates left/right with the cursor (body),
+// while the head independently tracks the cursor in Robo.
 function InteractiveRobo({ scale, position, uprightTilt = -0.4 }) {
+  const groupRef = useRef();
+  const { mouse } = useThree();
+
+  useFrame(() => {
+    if (!groupRef.current) return;
+
+    // mouse.x is between -1 (far left) and 1 (far right)
+    const targetYaw = mouse.x * 0.6; // body turn amount
+
+    // Smoothly ease body Y rotation while keeping the fixed X tilt
+    groupRef.current.rotation.x = uprightTilt;
+    groupRef.current.rotation.y += (targetYaw - groupRef.current.rotation.y) * 0.02;
+  });
+
   return (
-    <group rotation={[uprightTilt, 0, 0]}>
+    <group ref={groupRef}>
       <Robo scale={scale} position={position} />
     </group>
   );
