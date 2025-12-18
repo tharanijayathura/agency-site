@@ -1,9 +1,34 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 function Robo({ scale = 0.9, position = [0, -0.8, 0] }) {
   const { scene } = useGLTF("/models/robo.glb");
+  const headRef = useRef(null);
+  const { mouse } = useThree();
+
+  // Find a node in the GLB that looks like the head
+  useEffect(() => {
+    let found = null;
+    scene.traverse((obj) => {
+      if (!found && obj.name && obj.name.toLowerCase().includes("head")) {
+        found = obj;
+      }
+    });
+    headRef.current = found;
+  }, [scene]);
+
+  // Rotate the head with the cursor in both directions (left/right + up/down)
+  useFrame(() => {
+    if (!headRef.current) return;
+
+    // mouse.x, mouse.y are in range [-1, 1]
+    const targetYaw = mouse.x * 0.9;    // left/right look
+    const targetPitch = -mouse.y * 0.5; // so down = look down, up = look up
+
+    headRef.current.rotation.y += (targetYaw - headRef.current.rotation.y) * 0.15;
+    headRef.current.rotation.x += (targetPitch - headRef.current.rotation.x) * 0.15;
+  });
 
   return (
     <primitive
@@ -14,23 +39,11 @@ function Robo({ scale = 0.9, position = [0, -0.8, 0] }) {
   );
 }
 
-// Wrap robot in a group that rotates left/right with the cursor
-function InteractiveRobo({ scale, position }) {
-  const groupRef = useRef();
-  const { mouse } = useThree();
-
-  useFrame(() => {
-    if (!groupRef.current) return;
-
-    // mouse.x is between -1 (far left) and 1 (far right)
-    const targetY = mouse.x * 0.6; // adjust 0.6 for more/less turn
-
-    // Smoothly ease toward the target rotation
-    groupRef.current.rotation.y += (targetY - groupRef.current.rotation.y) * 0.1;
-  });
-
+// Wrap robot in a group that keeps it slightly tilted upright
+// Body no longer follows the cursor – only the head moves
+function InteractiveRobo({ scale, position, uprightTilt = -0.4 }) {
   return (
-    <group ref={groupRef}>
+    <group rotation={[uprightTilt, 0, 0]}>
       <Robo scale={scale} position={position} />
     </group>
   );

@@ -202,11 +202,11 @@ export default function Home() {
               animation: "pulse 4s ease-in-out infinite"
             }}
           />
-          <div style={{ position: "relative", zIndex: 1, width: "100%", height: "100%" }}>
+          <div style={{ position: "relative", zIndex: 1, width: "100%", height: "106%" }}>
             <Hero3D 
               cameraPosition={[0, 2.4, 3.6]}
               robotScale={3.5}
-              robotPosition={[0, -10.3, 0]}
+              robotPosition={[0, -10.4, 0]}
               showAutoRotate={false}
             />
           </div>
