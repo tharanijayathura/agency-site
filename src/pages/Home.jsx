@@ -204,9 +204,9 @@ export default function Home() {
           />
           <div style={{ position: "relative", zIndex: 1, width: "100%", height: "100%" }}>
             <Hero3D 
-              cameraPosition={[0, 1.5, 4]} 
-              robotScale={5}
-              robotPosition={[0, -3, 0]}
+              cameraPosition={[0, 2.4, 3.6]}
+              robotScale={3.5}
+              robotPosition={[0, -10.3, 0]}
               showAutoRotate={false}
             />
           </div>
