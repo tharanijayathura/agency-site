@@ -74,8 +74,7 @@ export default function Home() {
           gap: "60px",
           maxWidth: 1400,
           margin: "0 auto",
-          position: "relative",
-          overflow: "hidden"
+          position: "relative"
         }}
       >
         {/* Large watermark */}
@@ -228,62 +227,13 @@ export default function Home() {
           <div style={{ position: "relative", zIndex: 1, width: "100%", height: "106%" }}>
             <Hero3D 
               cameraPosition={[0, 1.4, 5.6]}
-              robotScale={1.5}
-              robotPosition={[0, -1.2, 0]}
+              robotScale={1.7}
+              robotPosition={[0, -0.6, 0]}
               showAutoRotate={false}
             />
           </div>
         </Motion.div>
 
-        {/* Floating highlight cards */}
-        <Motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.6 }}
-          style={{
-            position: "absolute",
-            bottom: 40,
-            left: "50%",
-            transform: "translateX(-50%)",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-            gap: 16,
-            width: "min(90%, 900px)",
-            zIndex: 3
-          }}
-        >
-          {[
-            { title: "1.2s LCP", desc: "Performance-first builds" },
-            { title: "3D Ready", desc: "WebGL + motion you can feel" },
-            { title: "UX-Driven", desc: "Conversion-minded journeys" }
-          ].map((item, idx) => (
-            <Motion.div
-              key={item.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 * idx + 0.6 }}
-              whileHover={{ y: -6, scale: 1.01 }}
-              style={{
-                padding: "18px 20px",
-                borderRadius: "16px",
-                background: "var(--card-surface)",
-                border: "1px solid var(--border)",
-                boxShadow: "var(--shadow-md)",
-                backdropFilter: "blur(14px)",
-                display: "flex",
-                flexDirection: "column",
-                gap: 6
-              }}
-            >
-              <span style={{ fontWeight: 700, color: "var(--text-primary)", fontSize: 16 }}>
-                {item.title}
-              </span>
-              <span style={{ color: "var(--text-secondary)", fontSize: 13, lineHeight: 1.5 }}>
-                {item.desc}
-              </span>
-            </Motion.div>
-          ))}
-        </Motion.div>
       </section>
 
       {/* ABOUT SECTION */}
