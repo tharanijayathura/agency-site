@@ -1,11 +1,14 @@
 export default function Footer() {
   return (
     <footer style={{
-      padding: "20px",
+      padding: "40px 20px",
       textAlign: "center",
-      opacity: 0.6
+      color: "#5A6C7D",
+      fontSize: "14px",
+      borderTop: "1px solid rgba(74, 144, 226, 0.1)",
+      background: "rgba(255, 255, 255, 0.5)"
     }}>
-      3D Model: “BoX _ RoBo” by DEDROX (CC BY)
+      3D Model: "Flying Robot" (CC BY)
     </footer>
   );
 }

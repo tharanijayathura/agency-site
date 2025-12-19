@@ -1,9 +1,9 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useGLTF } from "@react-three/drei";
-import { useEffect, useRef } from "react";
+import { OrbitControls, useGLTF } from "@react-three/drei";
+import { useEffect, useRef, Suspense } from "react";
 
 function Robo({ scale = 0.9, position = [0, -0.8, 0] }) {
-  const { scene } = useGLTF("/models/robo.glb");
+  const { scene } = useGLTF("/models/flying_robot.glb");
   const headRef = useRef(null);
   const { mouse } = useThree();
 
@@ -39,10 +39,11 @@ function Robo({ scale = 0.9, position = [0, -0.8, 0] }) {
   );
 }
 
-// Wrap robot in a group that stays slightly tilted upright
+// Wrap robot in a group that stays slightly tilted forward
 // and rotates left/right with the cursor (body),
 // while the head independently tracks the cursor in Robo.
-function InteractiveRobo({ scale, position, uprightTilt = -0.4 }) {
+// Positive X rotation tilts the model slightly forward toward the camera
+function InteractiveRobo({ scale, position, uprightTilt = 0.15 }) {
   const groupRef = useRef();
   const { mouse } = useThree();
 
@@ -69,13 +70,21 @@ export default function Hero3D({ cameraPosition = [0, 1.8, 5], robotScale = 0.9,
     <Canvas
       camera={{ position: cameraPosition, fov: 45 }}
       dpr={[1, 1.5]}
+      gl={{ antialias: true }}
+      style={{ touchAction: "none" }}
     >
-      <ambientLight intensity={2.5} />
-      <directionalLight position={[5, 5, 5]} intensity={3} />
-      <directionalLight position={[-5, 5, -5]} intensity={2} />
-      <pointLight position={[0, 5, 0]} intensity={1.5} />
-      <spotLight position={[0, 10, 0]} angle={0.3} penumbra={1} intensity={2} />
-      <InteractiveRobo scale={robotScale} position={robotPosition} />
+      <ambientLight intensity={1.6} />
+      <directionalLight position={[5, 5, 5]} intensity={2.2} />
+      <directionalLight position={[-5, 5, -5]} intensity={1.4} />
+      <pointLight position={[0, 5, 0]} intensity={1} />
+      <spotLight position={[0, 10, 0]} angle={0.3} penumbra={1} intensity={1.6} />
+      <Suspense fallback={null}>
+        <InteractiveRobo scale={robotScale} position={robotPosition} />
+      </Suspense>
+      <OrbitControls enableZoom={false} enablePan={false} />
     </Canvas>
   );
 }
+
+// Preload the GLB so it’s cached before render
+useGLTF.preload("/models/flying_robot.glb");

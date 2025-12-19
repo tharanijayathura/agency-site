@@ -1,10 +1,9 @@
 import { motion as Motion } from "framer-motion";
 
-export default function Navbar() {
+export default function Navbar({ theme = "light", onToggleTheme }) {
   const linkStyle = {
-    color: "#fff",
+    color: "var(--text-secondary)",
     textDecoration: "none",
-    opacity: 0.85,
     fontSize: "14px",
     fontWeight: 500,
     letterSpacing: "0.5px",
@@ -33,11 +32,11 @@ export default function Navbar() {
         width: "100%",
         top: 0,
         zIndex: 1000,
-        background: "rgba(10, 10, 15, 0.7)",
+        background: "var(--nav-bg)",
         backdropFilter: "blur(20px) saturate(180%)",
         WebkitBackdropFilter: "blur(20px) saturate(180%)",
-        borderBottom: "1px solid rgba(0, 240, 255, 0.2)",
-        boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)"
+        borderBottom: "1px solid var(--border-strong)",
+        boxShadow: "0 4px 16px rgba(0, 0, 0, 0.08)"
       }}
     >
       <div style={{ 
@@ -53,7 +52,7 @@ export default function Navbar() {
             fontSize: "24px",
             fontWeight: 800,
             fontFamily: "'Orbitron', sans-serif",
-            background: "linear-gradient(135deg, #00f0ff 0%, #b026ff 100%)",
+            background: "linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text"
@@ -71,15 +70,37 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 + 0.3 }}
             whileHover={{
-              opacity: 1,
-              background: "rgba(0, 240, 255, 0.1)",
-              boxShadow: "0 0 15px rgba(0, 240, 255, 0.3)"
+              background: "var(--link-hover-bg)",
+              boxShadow: "0 4px 12px var(--link-hover-shadow)",
+              color: "var(--accent)"
             }}
             whileTap={{ scale: 0.95 }}
           >
             {l.label}
           </Motion.a>
         ))}
+        <button
+          aria-label="Toggle theme"
+          onClick={onToggleTheme}
+          style={{
+            marginLeft: 12,
+            borderRadius: "12px",
+            border: "1px solid var(--border-strong)",
+            background: "var(--surface-1)",
+            color: "var(--text-primary)",
+            padding: "8px 12px",
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            cursor: "pointer",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.08)"
+          }}
+        >
+          <span style={{ fontSize: 14, fontWeight: 600 }}>
+            {theme === "light" ? "Dark" : "Light"}
+          </span>
+          <span>{theme === "light" ? "🌙" : "☀️"}</span>
+        </button>
       </div>
     </Motion.nav>
   );

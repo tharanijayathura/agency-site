@@ -7,7 +7,7 @@ const Section = ({ id, title, children, className = "" }) => (
     id={id} 
     className={className}
     style={{ 
-      padding: "120px 48px", 
+      padding: "80px 36px", 
       maxWidth: 1400, 
       margin: "0 auto",
       position: "relative"
@@ -29,7 +29,7 @@ const Section = ({ id, title, children, className = "" }) => (
         {title}
       </Motion.h2>
     )}
-    <div style={{ opacity: 0.95 }}>{children}</div>
+    <div>{children}</div>
   </section>
 );
 
@@ -74,9 +74,32 @@ export default function Home() {
           gap: "60px",
           maxWidth: 1400,
           margin: "0 auto",
-          position: "relative"
+          position: "relative",
+          overflow: "hidden"
         }}
       >
+        {/* Large watermark */}
+        <div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            inset: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "var(--text-secondary)",
+            opacity: 0.06,
+            fontSize: "38vw",
+            fontWeight: 800,
+            letterSpacing: "-0.08em",
+            pointerEvents: "none",
+            userSelect: "none",
+            zIndex: 0
+          }}
+        >
+          2025
+        </div>
+
         {/* LEFT CONTENT */}
         <Motion.div 
           initial={{ opacity: 0, x: -50 }}
@@ -92,17 +115,17 @@ export default function Home() {
               display: "inline-block",
               padding: "8px 20px",
               borderRadius: "20px",
-              background: "rgba(0, 240, 255, 0.1)",
-              border: "1px solid rgba(0, 240, 255, 0.3)",
+            background: "var(--link-hover-bg)",
+            border: "1px solid var(--border)",
               marginBottom: "24px",
               fontSize: "14px",
               fontWeight: 600,
-              color: "#00f0ff",
+            color: "var(--accent)",
               textTransform: "uppercase",
               letterSpacing: "1px"
             }}
           >
-            Next-Gen Web Experiences
+            Meet the Flying Robot
           </Motion.div>
 
           <Motion.h1
@@ -119,7 +142,7 @@ export default function Home() {
             We Build Futuristic
             <br />
             <span style={{ 
-              background: "linear-gradient(135deg, #00f0ff 0%, #b026ff 100%)",
+              background: "linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text"
@@ -134,7 +157,7 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.5 }}
             style={{ 
               marginTop: 24, 
-              opacity: 0.85,
+              color: "var(--text-secondary)",
               fontSize: "18px",
               lineHeight: 1.7,
               maxWidth: "600px"
@@ -154,14 +177,14 @@ export default function Home() {
             </a>
             <button
               style={{
-                background: "transparent",
-                border: "2px solid rgba(0, 240, 255, 0.5)",
-                color: "#00f0ff",
-                boxShadow: "none"
+              background: "transparent",
+              border: "2px solid var(--border-strong)",
+              color: "var(--accent)",
+              boxShadow: "none"
               }}
               onMouseEnter={(e) => {
-                e.target.style.background = "rgba(0, 240, 255, 0.1)";
-                e.target.style.boxShadow = "0 0 20px rgba(0, 240, 255, 0.4)";
+              e.target.style.background = "var(--link-hover-bg)";
+              e.target.style.boxShadow = "0 4px 16px var(--link-hover-shadow)";
               }}
               onMouseLeave={(e) => {
                 e.target.style.background = "transparent";
@@ -196,7 +219,7 @@ export default function Home() {
               width: "500px",
               height: "500px",
               borderRadius: "50%",
-              background: "radial-gradient(circle, rgba(0, 240, 255, 0.2) 0%, transparent 70%)",
+              background: "radial-gradient(circle, rgba(74, 144, 226, 0.15) 0%, transparent 70%)",
               filter: "blur(60px)",
               zIndex: 0,
               animation: "pulse 4s ease-in-out infinite"
@@ -204,12 +227,62 @@ export default function Home() {
           />
           <div style={{ position: "relative", zIndex: 1, width: "100%", height: "106%" }}>
             <Hero3D 
-              cameraPosition={[0, 2.4, 3.6]}
-              robotScale={3.5}
-              robotPosition={[0, -10.4, 0]}
+              cameraPosition={[0, 1.4, 5.6]}
+              robotScale={1.5}
+              robotPosition={[0, -1.2, 0]}
               showAutoRotate={false}
             />
           </div>
+        </Motion.div>
+
+        {/* Floating highlight cards */}
+        <Motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.6 }}
+          style={{
+            position: "absolute",
+            bottom: 40,
+            left: "50%",
+            transform: "translateX(-50%)",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+            gap: 16,
+            width: "min(90%, 900px)",
+            zIndex: 3
+          }}
+        >
+          {[
+            { title: "1.2s LCP", desc: "Performance-first builds" },
+            { title: "3D Ready", desc: "WebGL + motion you can feel" },
+            { title: "UX-Driven", desc: "Conversion-minded journeys" }
+          ].map((item, idx) => (
+            <Motion.div
+              key={item.title}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 * idx + 0.6 }}
+              whileHover={{ y: -6, scale: 1.01 }}
+              style={{
+                padding: "18px 20px",
+                borderRadius: "16px",
+                background: "var(--card-surface)",
+                border: "1px solid var(--border)",
+                boxShadow: "var(--shadow-md)",
+                backdropFilter: "blur(14px)",
+                display: "flex",
+                flexDirection: "column",
+                gap: 6
+              }}
+            >
+              <span style={{ fontWeight: 700, color: "var(--text-primary)", fontSize: 16 }}>
+                {item.title}
+              </span>
+              <span style={{ color: "var(--text-secondary)", fontSize: 13, lineHeight: 1.5 }}>
+                {item.desc}
+              </span>
+            </Motion.div>
+          ))}
         </Motion.div>
       </section>
 
@@ -229,7 +302,7 @@ export default function Home() {
           <p style={{ 
             fontSize: "18px", 
             lineHeight: 1.8, 
-            opacity: 0.9,
+            color: "var(--text-secondary)",
             marginBottom: 40
           }}>
             RoboStudio is a boutique agency crafting fast, delightful web apps. We blend
@@ -257,23 +330,24 @@ export default function Home() {
                 style={{
                   padding: "32px",
                   borderRadius: "16px",
-                  background: "rgba(255, 255, 255, 0.03)",
+                  background: "var(--card-surface)",
                   backdropFilter: "blur(20px)",
-                  border: "1px solid rgba(0, 240, 255, 0.2)",
+                  border: "1px solid var(--border)",
+                  boxShadow: "var(--shadow-md)",
                   textAlign: "center"
                 }}
               >
                 <h3 style={{ 
                   fontSize: "36px", 
                   marginBottom: 8,
-                  background: "linear-gradient(135deg, #00f0ff 0%, #b026ff 100%)",
+                  background: "linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text"
                 }}>
                   {stat.number}
                 </h3>
-                <p style={{ opacity: 0.7, fontSize: "14px" }}>{stat.label}</p>
+                <p style={{ color: "var(--text-secondary)", fontSize: "14px" }}>{stat.label}</p>
               </Motion.div>
             ))}
           </div>
@@ -296,7 +370,7 @@ export default function Home() {
             </h2>
             <p style={{
               textAlign: "center",
-              opacity: 0.8,
+              color: "var(--text-secondary)",
               marginBottom: 60,
               fontSize: "16px"
             }}>
@@ -315,32 +389,32 @@ export default function Home() {
                   name: "Alex Chen",
                   role: "Creative Director",
                   bio: "Visionary designer with 10+ years crafting digital experiences",
-                  gradient: "linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(0, 240, 255, 0.05))",
-                  borderColor: "rgba(0, 240, 255, 0.3)",
+                  gradient: "linear-gradient(135deg, var(--overlay-1), transparent)",
+                  borderColor: "var(--border)",
                   initials: "AC"
                 },
                 {
                   name: "Sarah Martinez",
                   role: "Lead Developer",
                   bio: "Full-stack wizard specializing in 3D web technologies",
-                  gradient: "linear-gradient(135deg, rgba(176, 38, 255, 0.15), rgba(176, 38, 255, 0.05))",
-                  borderColor: "rgba(176, 38, 255, 0.3)",
+                  gradient: "linear-gradient(135deg, var(--overlay-2), transparent)",
+                  borderColor: "var(--border)",
                   initials: "SM"
                 },
                 {
                   name: "Jordan Kim",
                   role: "3D Artist",
                   bio: "Bringing virtual worlds to life with stunning 3D models",
-                  gradient: "linear-gradient(135deg, rgba(255, 0, 110, 0.15), rgba(255, 0, 110, 0.05))",
-                  borderColor: "rgba(255, 0, 110, 0.3)",
+                  gradient: "linear-gradient(135deg, rgba(255, 107, 107, 0.12), transparent)",
+                  borderColor: "var(--border)",
                   initials: "JK"
                 },
                 {
                   name: "Taylor Reed",
                   role: "UX Strategist",
                   bio: "Transforming complex ideas into intuitive user journeys",
-                  gradient: "linear-gradient(135deg, rgba(67, 97, 238, 0.15), rgba(67, 97, 238, 0.05))",
-                  borderColor: "rgba(67, 97, 238, 0.3)",
+                  gradient: "linear-gradient(135deg, rgba(46, 92, 138, 0.12), transparent)",
+                  borderColor: "var(--border)",
                   initials: "TR"
                 }
               ].map((member, index) => (
@@ -357,9 +431,10 @@ export default function Home() {
                   style={{
                     padding: "32px",
                     borderRadius: "20px",
-                    background: member.gradient,
+                  background: "var(--card-surface)",
                     backdropFilter: "blur(20px) saturate(180%)",
-                    border: `1px solid ${member.borderColor}`,
+                  border: `1px solid ${member.borderColor}`,
+                  boxShadow: "var(--shadow-md)",
                     textAlign: "center",
                     cursor: "pointer",
                     transition: "all 0.3s ease",
@@ -379,7 +454,7 @@ export default function Home() {
                     justifyContent: "center",
                     fontSize: "32px",
                     fontWeight: 700,
-                    color: "#fff",
+                    color: "var(--accent)",
                     boxShadow: `0 8px 32px ${member.borderColor}`,
                     position: "relative"
                   }}>
@@ -400,7 +475,7 @@ export default function Home() {
                     fontSize: "22px",
                     fontWeight: 700,
                     marginBottom: 8,
-                    color: "#fff"
+                    color: "var(--text-primary)"
                   }}>
                     {member.name}
                   </h3>
@@ -421,7 +496,7 @@ export default function Home() {
                   <p style={{
                     fontSize: "14px",
                     lineHeight: 1.6,
-                    opacity: 0.8,
+                    color: "var(--text-secondary)",
                     marginTop: 12
                   }}>
                     {member.bio}
@@ -445,7 +520,7 @@ export default function Home() {
                           width: "36px",
                           height: "36px",
                           borderRadius: "8px",
-                          background: "rgba(255, 255, 255, 0.05)",
+                          background: "var(--link-hover-bg)",
                           border: `1px solid ${member.borderColor.replace('0.3', '0.2')}`,
                           display: "flex",
                           alignItems: "center",
@@ -459,7 +534,7 @@ export default function Home() {
                           e.currentTarget.style.boxShadow = `0 0 15px ${member.borderColor}`;
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.background = "rgba(255, 255, 255, 0.05)";
+                          e.currentTarget.style.background = "rgba(74, 144, 226, 0.05)";
                           e.currentTarget.style.borderColor = member.borderColor.replace('0.3', '0.2');
                           e.currentTarget.style.boxShadow = "none";
                         }}
@@ -484,7 +559,7 @@ export default function Home() {
         id="services" 
         title="Our Services"
         style={{
-          background: "radial-gradient(circle at center, rgba(176, 38, 255, 0.05) 0%, transparent 70%)"
+          background: "radial-gradient(circle at center, var(--overlay-1) 0%, transparent 70%)"
         }}
       >
         <Motion.div
@@ -503,25 +578,25 @@ export default function Home() {
               icon: "🎨", 
               title: "Web Apps", 
               desc: "End-to-end delivery with modern tooling and best practices.",
-              gradient: "linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(0, 240, 255, 0.05))"
+              gradient: "linear-gradient(135deg, rgba(74, 144, 226, 0.1), rgba(74, 144, 226, 0.05))"
             },
             { 
               icon: "⚡", 
               title: "3D/Interactive", 
               desc: "Immersive 3D experiences that engage and captivate users.",
-              gradient: "linear-gradient(135deg, rgba(176, 38, 255, 0.1), rgba(176, 38, 255, 0.05))"
+              gradient: "linear-gradient(135deg, rgba(135, 206, 235, 0.15), rgba(135, 206, 235, 0.05))"
             },
             { 
               icon: "🚀", 
               title: "Brand Sites", 
               desc: "Stunning brand experiences that tell your unique story.",
-              gradient: "linear-gradient(135deg, rgba(255, 0, 110, 0.1), rgba(255, 0, 110, 0.05))"
+              gradient: "linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(255, 107, 107, 0.05))"
             },
             { 
               icon: "⚙️", 
               title: "Performance/SEO", 
               desc: "Lightning-fast sites optimized for search and conversion.",
-              gradient: "linear-gradient(135deg, rgba(67, 97, 238, 0.1), rgba(67, 97, 238, 0.05))"
+              gradient: "linear-gradient(135deg, rgba(46, 92, 138, 0.1), rgba(46, 92, 138, 0.05))"
             }
           ].map((service, index) => (
             <Motion.div
@@ -534,9 +609,10 @@ export default function Home() {
               style={{
                 padding: "40px",
                 borderRadius: "20px",
-                background: service.gradient,
+                background: "var(--card-surface)",
                 backdropFilter: "blur(20px) saturate(180%)",
-                border: "1px solid rgba(255, 255, 255, 0.1)",
+                border: "1px solid var(--border)",
+                boxShadow: "var(--shadow-md)",
                 cursor: "pointer",
                 transition: "all 0.3s ease",
                 position: "relative",
@@ -546,19 +622,20 @@ export default function Home() {
               <div style={{ 
                 fontSize: "48px", 
                 marginBottom: 20,
-                filter: "drop-shadow(0 0 10px rgba(0, 240, 255, 0.3))"
+                filter: "drop-shadow(0 2px 4px rgba(74, 144, 226, 0.2))"
               }}>
                 {service.icon}
               </div>
               <h3 style={{ 
                 marginBottom: 12, 
                 fontSize: "22px",
-                fontWeight: 700
+                fontWeight: 700,
+                color: "var(--text-primary)"
               }}>
                 {service.title}
               </h3>
               <p style={{ 
-                opacity: 0.8, 
+                color: "var(--text-secondary)", 
                 lineHeight: 1.6,
                 fontSize: "15px"
               }}>
@@ -601,9 +678,10 @@ export default function Home() {
               style={{
                 height: 280,
                 borderRadius: "20px",
-                border: "1px solid rgba(255, 255, 255, 0.1)",
-                background: project.gradient,
+                border: "1px solid var(--border)",
+                background: "var(--card-surface)",
                 backdropFilter: "blur(10px)",
+                boxShadow: "var(--shadow-md)",
                 padding: "32px",
                 display: "flex",
                 flexDirection: "column",
@@ -617,12 +695,13 @@ export default function Home() {
                 <h3 style={{ 
                   marginBottom: 12, 
                   fontSize: "22px",
-                  fontWeight: 700
+                  fontWeight: 700,
+                color: "var(--text-primary)"
                 }}>
                   {project.title}
                 </h3>
                 <p style={{ 
-                  opacity: 0.85, 
+                color: "var(--text-secondary)", 
                   lineHeight: 1.6,
                   fontSize: "15px"
                 }}>
@@ -634,9 +713,9 @@ export default function Home() {
                   alignSelf: "flex-start",
                   padding: "10px 24px",
                   fontSize: "14px",
-                  background: "rgba(255, 255, 255, 0.1)",
-                  border: "1px solid rgba(255, 255, 255, 0.2)",
-                  color: "white"
+                  background: "var(--link-hover-bg)",
+                  border: "1px solid var(--border-strong)",
+                  color: "var(--accent)"
                 }}
               >
                 View Project →
@@ -683,9 +762,10 @@ export default function Home() {
               style={{
                 padding: "40px",
                 borderRadius: "20px",
-                background: "rgba(255, 255, 255, 0.03)",
+                background: "var(--card-surface)",
                 backdropFilter: "blur(20px)",
-                border: "1px solid rgba(255, 255, 255, 0.1)",
+                border: "1px solid var(--border)",
+                boxShadow: "var(--shadow-md)",
                 position: "relative"
               }}
             >
@@ -698,7 +778,7 @@ export default function Home() {
               </div>
               <p style={{ 
                 marginBottom: 24, 
-                opacity: 0.9,
+                color: "var(--text-secondary)",
                 lineHeight: 1.7,
                 fontSize: "16px"
               }}>
@@ -708,12 +788,13 @@ export default function Home() {
                 <p style={{ 
                   fontWeight: 600, 
                   marginBottom: 4,
-                  fontSize: "16px"
+                  fontSize: "16px",
+                  color: "var(--text-primary)"
                 }}>
                   {review.name}
                 </p>
                 <p style={{ 
-                  opacity: 0.6,
+                  color: "var(--text-secondary)",
                   fontSize: "14px"
                 }}>
                   {review.role}
@@ -749,19 +830,19 @@ export default function Home() {
               style={{
                 padding: "16px 20px",
                 borderRadius: "12px",
-                border: "1px solid rgba(255, 255, 255, 0.1)",
-                background: "rgba(255, 255, 255, 0.05)",
+                border: "1px solid var(--border)",
+                background: "var(--card-surface)",
                 backdropFilter: "blur(10px)",
-                color: "#fff",
+                color: "var(--text-primary)",
                 fontSize: "15px",
                 transition: "all 0.3s ease"
               }}
               onFocus={(e) => {
-                e.target.style.borderColor = "rgba(0, 240, 255, 0.5)";
-                e.target.style.boxShadow = "0 0 20px rgba(0, 240, 255, 0.2)";
+                e.target.style.borderColor = "var(--border-strong)";
+                e.target.style.boxShadow = "0 0 20px var(--link-hover-shadow)";
               }}
               onBlur={(e) => {
-                e.target.style.borderColor = "rgba(255, 255, 255, 0.1)";
+                e.target.style.borderColor = "var(--border)";
                 e.target.style.boxShadow = "none";
               }}
             />
@@ -775,19 +856,19 @@ export default function Home() {
               style={{
                 padding: "16px 20px",
                 borderRadius: "12px",
-                border: "1px solid rgba(255, 255, 255, 0.1)",
-                background: "rgba(255, 255, 255, 0.05)",
+                border: "1px solid var(--border)",
+                background: "var(--card-surface)",
                 backdropFilter: "blur(10px)",
-                color: "#fff",
+                color: "var(--text-primary)",
                 fontSize: "15px",
                 transition: "all 0.3s ease"
               }}
               onFocus={(e) => {
-                e.target.style.borderColor = "rgba(0, 240, 255, 0.5)";
-                e.target.style.boxShadow = "0 0 20px rgba(0, 240, 255, 0.2)";
+                e.target.style.borderColor = "var(--border-strong)";
+                e.target.style.boxShadow = "0 0 20px var(--link-hover-shadow)";
               }}
               onBlur={(e) => {
-                e.target.style.borderColor = "rgba(255, 255, 255, 0.1)";
+                e.target.style.borderColor = "var(--border)";
                 e.target.style.boxShadow = "none";
               }}
             />
@@ -801,21 +882,21 @@ export default function Home() {
               style={{
                 padding: "16px 20px",
                 borderRadius: "12px",
-                border: "1px solid rgba(255, 255, 255, 0.1)",
-                background: "rgba(255, 255, 255, 0.05)",
+                border: "1px solid var(--border)",
+                background: "var(--card-surface)",
                 backdropFilter: "blur(10px)",
-                color: "#fff",
+                color: "var(--text-primary)",
                 fontSize: "15px",
                 fontFamily: "inherit",
                 resize: "vertical",
                 transition: "all 0.3s ease"
               }}
               onFocus={(e) => {
-                e.target.style.borderColor = "rgba(0, 240, 255, 0.5)";
-                e.target.style.boxShadow = "0 0 20px rgba(0, 240, 255, 0.2)";
+                e.target.style.borderColor = "var(--border-strong)";
+                e.target.style.boxShadow = "0 0 20px var(--link-hover-shadow)";
               }}
               onBlur={(e) => {
-                e.target.style.borderColor = "rgba(255, 255, 255, 0.1)";
+                e.target.style.borderColor = "var(--border)";
                 e.target.style.boxShadow = "none";
               }}
             />
