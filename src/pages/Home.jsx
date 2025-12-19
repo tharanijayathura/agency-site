@@ -34,6 +34,7 @@ const Section = ({ id, title, children, className = "" }) => (
 );
 
 export default function Home() {
+  const currentYear = new Date().getFullYear();
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -96,7 +97,7 @@ export default function Home() {
             zIndex: 0
           }}
         >
-          2025
+          {currentYear}
         </div>
 
         {/* LEFT CONTENT */}
