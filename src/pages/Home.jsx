@@ -33,7 +33,7 @@ const Section = ({ id, title, children, className = "" }) => (
   </section>
 );
 
-const ADMIN_PASSWORD = "changeme-admin";
+const ADMIN_PASSWORD = "icew";
 
 const defaultTeamMembers = [
   {
