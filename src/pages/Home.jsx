@@ -64,6 +64,7 @@ export default function Home() {
     <main style={{ position: "relative", zIndex: 1 }}>
       {/* HERO SECTION */}
       <section
+        id="home"
         style={{
           display: "flex",
           alignItems: "center",
@@ -305,6 +306,7 @@ export default function Home() {
 
           {/* TEAM MEMBERS SECTION */}
           <Motion.div
+            id="team"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}

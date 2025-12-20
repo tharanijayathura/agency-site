@@ -1,6 +1,10 @@
+import React, { useEffect, useState } from "react";
 import { motion as Motion } from "framer-motion";
 
 export default function Navbar({ theme = "light", onToggleTheme }) {
+  const [active, setActive] = useState("#home");
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const linkStyle = {
     color: "var(--text-secondary)",
     textDecoration: "none",
@@ -14,12 +18,52 @@ export default function Navbar({ theme = "light", onToggleTheme }) {
   };
 
   const links = [
+    { href: "#home", label: "Home" },
     { href: "#about", label: "About" },
     { href: "#services", label: "Services" },
     { href: "#projects", label: "Projects" },
+    { href: "#team", label: "Team" },
     { href: "#reviews", label: "Reviews" },
     { href: "#contact", label: "Contact" }
   ];
+
+  const scrollToSection = (hash) => {
+    if (!hash || !hash.startsWith("#")) return;
+    const id = hash.slice(1);
+    const element = document.getElementById(id);
+    if (!element) return;
+
+    const yOffset = 90; // navbar height offset
+    const y = element.getBoundingClientRect().top + window.scrollY - yOffset;
+
+    window.scrollTo({ top: y, behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    const sectionIds = ["home", "about", "services", "projects", "team", "reviews", "contact"];
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActive(`#${entry.target.id}`);
+          }
+        });
+      },
+      {
+        root: null,
+        rootMargin: "-40% 0px -50% 0px",
+        threshold: 0.3
+      }
+    );
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <Motion.nav
@@ -39,13 +83,7 @@ export default function Navbar({ theme = "light", onToggleTheme }) {
         boxShadow: "0 4px 16px rgba(0, 0, 0, 0.08)"
       }}
     >
-      <div style={{ 
-        display: "flex", 
-        alignItems: "center", 
-        gap: 32,
-        maxWidth: "1400px",
-        margin: "0 auto"
-      }}>
+      <div className="navbar-inner">
         <Motion.h3 
           style={{ 
             marginRight: "auto",
@@ -61,24 +99,65 @@ export default function Navbar({ theme = "light", onToggleTheme }) {
         >
           RoboStudio
         </Motion.h3>
-        {links.map((l, index) => (
-          <Motion.a
-            key={l.href}
-            href={l.href}
-            style={linkStyle}
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 + 0.3 }}
-            whileHover={{
-              background: "var(--link-hover-bg)",
-              boxShadow: "0 4px 12px var(--link-hover-shadow)",
-              color: "var(--accent)"
-            }}
-            whileTap={{ scale: 0.95 }}
-          >
-            {l.label}
-          </Motion.a>
-        ))}
+        <div
+          className={
+            "navbar-links" + (menuOpen ? " mobile-open" : "")
+          }
+        >
+          {links.map((l, index) => (
+            <Motion.a
+              key={l.href}
+              href={l.href}
+              style={{
+                ...linkStyle,
+                ...(active === l.href
+                  ? {
+                      background: "var(--link-hover-bg)",
+                      color: "var(--accent)",
+                      boxShadow: "0 4px 12px var(--link-hover-shadow)"
+                    }
+                  : null)
+              }}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 + 0.3 }}
+              whileHover={{
+                background: "var(--link-hover-bg)",
+                boxShadow: "0 4px 12px var(--link-hover-shadow)",
+                color: "var(--accent)"
+              }}
+              whileTap={{ scale: 0.95 }}
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection(l.href);
+                setActive(l.href);
+                setMenuOpen(false);
+              }}
+            >
+              {l.label}
+            </Motion.a>
+          ))}
+        </div>
+
+        <button
+          className="navbar-menu-toggle"
+          aria-label="Toggle navigation menu"
+          onClick={() => setMenuOpen((prev) => !prev)}
+          style={{
+            marginLeft: "auto",
+            borderRadius: "999px",
+            border: "1px solid var(--border-strong)",
+            background: "var(--surface-1)",
+            color: "var(--text-primary)",
+            padding: "6px 10px",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.08)"
+          }}
+        >
+          <span style={{ fontSize: 18 }}>
+            {menuOpen ? "✕" : "☰"}
+          </span>
+        </button>
+
         <button
           aria-label="Toggle theme"
           onClick={onToggleTheme}
@@ -97,9 +176,8 @@ export default function Navbar({ theme = "light", onToggleTheme }) {
           }}
         >
           <span style={{ fontSize: 14, fontWeight: 600 }}>
-            {theme === "light" ? "Dark" : "Light"}
+            {theme === "light" ? "Dark Mode" : "Light Mode"}
           </span>
-          <span>{theme === "light" ? "🌙" : "☀️"}</span>
         </button>
       </div>
     </Motion.nav>
