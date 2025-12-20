@@ -97,7 +97,7 @@ export default function Navbar({ theme = "light", onToggleTheme }) {
           }}
           whileHover={{ scale: 1.05 }}
         >
-          RoboStudio
+          GALE GRID
         </Motion.h3>
         <div
           className={

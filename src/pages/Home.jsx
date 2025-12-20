@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Hero3D from "../components/Hero3D";
 import { motion as Motion } from "framer-motion";
 
@@ -33,48 +33,102 @@ const Section = ({ id, title, children, className = "" }) => (
   </section>
 );
 
-const ADMIN_PASSWORD = "icew";
+function SocialIcon({ type }) {
+  const commonProps = {
+    width: 18,
+    height: 18,
+    viewBox: "0 0 24 24",
+    fill: "none",
+    xmlns: "http://www.w3.org/2000/svg"
+  };
 
+  switch (type) {
+    case "linkedin":
+      return (
+        <svg {...commonProps}>
+          <rect x="3" y="3" width="18" height="18" rx="3" fill="#0A66C2" />
+          <path
+            d="M8 17H6V10H8V17ZM7 9C6.3 9 5.75 8.45 5.75 7.75C5.75 7.04 6.3 6.5 7 6.5C7.7 6.5 8.25 7.04 8.25 7.75C8.25 8.45 7.7 9 7 9ZM18 17H16V13.4C16 12.45 15.55 11.9 14.8 11.9C13.98 11.9 13.5 12.46 13.5 13.4V17H11.5V10H13.5V10.9C13.92 10.25 14.7 9.7 15.85 9.7C17.47 9.7 18 10.76 18 12.26V17Z"
+            fill="white"
+          />
+        </svg>
+      );
+    case "github":
+      return (
+        <svg {...commonProps}>
+          <path
+            d="M12 2C6.48 2 2 6.58 2 12.18C2 16.56 4.87 20.26 8.84 21.54C9.34 21.64 9.53 21.34 9.53 21.08C9.53 20.86 9.52 20.26 9.52 19.5C7 20.02 6.35 18.55 6.35 18.55C5.9 17.42 5.23 17.12 5.23 17.12C4.31 16.5 5.3 16.52 5.3 16.52C6.31 16.6 6.84 17.66 6.84 17.66C7.74 19.31 9.29 18.84 9.9 18.58C9.99 17.9 10.26 17.43 10.55 17.19C8.53 16.95 6.4 16.12 6.4 12.73C6.4 11.75 6.74 10.95 7.31 10.33C7.22 10.09 6.92 9.15 7.39 7.86C7.39 7.86 8.15 7.61 9.52 8.63C10.24 8.42 11.01 8.32 11.78 8.32C12.55 8.32 13.32 8.42 14.04 8.63C15.41 7.61 16.17 7.86 16.17 7.86C16.64 9.15 16.34 10.09 16.25 10.33C16.83 10.95 17.16 11.75 17.16 12.73C17.16 16.13 15.02 16.94 12.99 17.18C13.36 17.49 13.69 18.11 13.69 19.06C13.69 20.36 13.68 21.46 13.68 21.74C13.68 22 13.87 22.31 14.38 22.2C18.34 20.93 21.21 17.23 21.21 12.18C21.21 6.58 16.73 2 12 2Z"
+            fill="#000000"
+          />
+        </svg>
+      );
+    case "facebook":
+      return (
+        <svg {...commonProps}>
+          <rect x="3" y="3" width="18" height="18" rx="4" fill="#1877F2" />
+          <path
+            d="M14 8H15.5V6H14C11.79 6 11 7.34 11 8.9V10H9.5V12H11V18H13V12H14.7L15.5 10H13V8.9C13 8.4 13.24 8 14 8Z"
+            fill="white"
+          />
+        </svg>
+      );
+    case "portfolio":
+      return (
+        <svg {...commonProps}>
+          <circle cx="12" cy="12" r="8" stroke="#4A90E2" strokeWidth="1.6" />
+          <path
+            d="M4 12H20M12 4C9.5 6.5 8.25 9.25 8.25 12C8.25 14.75 9.5 17.5 12 20C14.5 17.5 15.75 14.75 15.75 12C15.75 9.25 14.5 6.5 12 4Z"
+            stroke="#4A90E2"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      );
+    case "cv":
+      return (
+        <svg {...commonProps}>
+          <rect x="7" y="3" width="10" height="18" rx="2" fill="#111827" stroke="#4A90E2" strokeWidth="1.5" />
+          <path
+            d="M9.5 8.5H14.5M9.5 11H14.5M9.5 13.5H12.5"
+            stroke="#4A90E2"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+          />
+        </svg>
+      );
+    default:
+      return null;
+  }
+}
 const defaultTeamMembers = [
   {
-    name: "Alex Chen",
-    role: "Creative Director",
-    bio: "Visionary designer with 10+ years crafting digital experiences",
+    name: "Tharani Jayathura",
+    role: "Co‑Founder & Creative Lead",
+    bio: "Driving the visual direction, brand story, and overall experience of every project we ship.",
     gradient: "linear-gradient(135deg, var(--overlay-1), transparent)",
     borderColor: "rgba(74, 144, 226, 0.3)",
-    initials: "AC",
-    linkedinUrl: "https://www.linkedin.com/",
-    githubUrl: "https://github.com/"
+    initials: "TJ",
+    imageUrl: "public/models/tharani.png",
+    facebookUrl: "https://www.facebook.com/profile.php?id=100078636897099",
+    linkedinUrl: "www.linkedin.com/in/tharani-jayathura-96235226b",
+    githubUrl: "https://github.com/",
+    portfolioUrl: "https://tharani-jayathura.vercel.app/",
+    cvUrl: "/models/CV-Tharani.pdf"
   },
   {
-    name: "Sarah Martinez",
-    role: "Lead Developer",
-    bio: "Full-stack wizard specializing in 3D web technologies",
-    gradient: "linear-gradient(135deg, var(--overlay-2), transparent)",
-    borderColor: "rgba(135, 206, 235, 0.3)",
-    initials: "SM",
+    name: "Pawan Sankalpa",
+    role: "Co‑Founder & Lead Developer",
+    bio: "Leads the engineering, performance, and 3D implementation to keep everything fast and polished.",
+    gradient: "linear-gradient(135deg, var(--overlay-1), transparent)",
+    borderColor: "rgba(74, 144, 226, 0.3)",
+    initials: "PS",
+    imageUrl: "public/models/pawan.jpeg",
+    facebookUrl: "https://www.facebook.com/",
     linkedinUrl: "https://www.linkedin.com/",
-    githubUrl: "https://github.com/"
-  },
-  {
-    name: "Jordan Kim",
-    role: "3D Artist",
-    bio: "Bringing virtual worlds to life with stunning 3D models",
-    gradient: "linear-gradient(135deg, rgba(255, 107, 107, 0.12), transparent)",
-    borderColor: "rgba(255, 107, 107, 0.3)",
-    initials: "JK",
-    linkedinUrl: "https://www.linkedin.com/",
-    githubUrl: "https://github.com/"
-  },
-  {
-    name: "Taylor Reed",
-    role: "UX Strategist",
-    bio: "Transforming complex ideas into intuitive user journeys",
-    gradient: "linear-gradient(135deg, rgba(46, 92, 138, 0.12), transparent)",
-    borderColor: "rgba(46, 92, 138, 0.3)",
-    initials: "TR",
-    linkedinUrl: "https://www.linkedin.com/",
-    githubUrl: "https://github.com/"
+    githubUrl: "https://github.com/",
+    portfolioUrl: "https://your-portfolio-link.com/",
+    cvUrl: "https://your-cv-link.com/"
   }
 ];
 
@@ -85,8 +139,8 @@ const defaultProjects = [
     gradient:
       "linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(176, 38, 255, 0.15))",
     githubUrl: "",
-    demoUrl: "",
-    thumbnailUrl: ""
+    demoUrl: "https://www.youtube.com/",
+    thumbnailUrl: "/assets/projects/ecommerce.jpg"
   },
   {
     title: "Interactive Dashboard",
@@ -94,8 +148,8 @@ const defaultProjects = [
     gradient:
       "linear-gradient(135deg, rgba(176, 38, 255, 0.2), rgba(255, 0, 110, 0.15))",
     githubUrl: "",
-    demoUrl: "",
-    thumbnailUrl: ""
+    demoUrl: "https://www.youtube.com/",
+    thumbnailUrl: "/assets/projects/dashboard.jpg"
   },
   {
     title: "Virtual Showroom",
@@ -103,8 +157,8 @@ const defaultProjects = [
     gradient:
       "linear-gradient(135deg, rgba(255, 0, 110, 0.2), rgba(0, 240, 255, 0.15))",
     githubUrl: "",
-    demoUrl: "",
-    thumbnailUrl: ""
+    demoUrl: "https://www.youtube.com/",
+    thumbnailUrl: "/assets/projects/showroom.jpg"
   },
   {
     title: "AI-Powered Analytics",
@@ -112,8 +166,8 @@ const defaultProjects = [
     gradient:
       "linear-gradient(135deg, rgba(67, 97, 238, 0.2), rgba(176, 38, 255, 0.15))",
     githubUrl: "",
-    demoUrl: "",
-    thumbnailUrl: ""
+    demoUrl: "https://www.youtube.com/",
+    thumbnailUrl: "/assets/projects/analytics.jpg"
   },
   {
     title: "Cloud Infrastructure",
@@ -121,8 +175,8 @@ const defaultProjects = [
     gradient:
       "linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(67, 97, 238, 0.15))",
     githubUrl: "",
-    demoUrl: "",
-    thumbnailUrl: ""
+    demoUrl: "https://www.youtube.com/",
+    thumbnailUrl: "/assets/projects/cloud.jpg"
   },
   {
     title: "Mobile Experience",
@@ -130,8 +184,8 @@ const defaultProjects = [
     gradient:
       "linear-gradient(135deg, rgba(255, 0, 110, 0.2), rgba(0, 240, 255, 0.15))",
     githubUrl: "",
-    demoUrl: "",
-    thumbnailUrl: ""
+    demoUrl: "https://www.youtube.com/",
+    thumbnailUrl: "/assets/projects/mobile.jpg"
   }
 ];
 
@@ -176,190 +230,13 @@ export default function Home() {
       transition: { duration: 0.5 }
     }
   };
-  const [isAdmin, setIsAdmin] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return window.localStorage.getItem("isAdmin") === "true";
-  });
+  const projects = defaultProjects;
+  const teamMembers = defaultTeamMembers;
 
-  const [projects, setProjects] = useState(() => {
-    if (typeof window === "undefined") return defaultProjects;
-    try {
-      const stored = window.localStorage.getItem("projects");
-      return stored ? JSON.parse(stored) : defaultProjects;
-    } catch {
-      return defaultProjects;
-    }
-  });
-
-  const [teamMembers, setTeamMembers] = useState(() => {
-    if (typeof window === "undefined") return defaultTeamMembers;
-    try {
-      const stored = window.localStorage.getItem("teamMembers");
-      return stored ? JSON.parse(stored) : defaultTeamMembers;
-    } catch {
-      return defaultTeamMembers;
-    }
-  });
-
-  const [reviews, setReviews] = useState(() => {
-    if (typeof window === "undefined") return defaultReviews;
-    try {
-      const stored = window.localStorage.getItem("reviews");
-      return stored ? JSON.parse(stored) : defaultReviews;
-    } catch {
-      return defaultReviews;
-    }
-  });
-
-  const [newProjectTitle, setNewProjectTitle] = useState("");
-  const [newProjectDesc, setNewProjectDesc] = useState("");
-  const [newProjectGithub, setNewProjectGithub] = useState("");
-  const [newProjectDemo, setNewProjectDemo] = useState("");
-  const [newProjectThumbnail, setNewProjectThumbnail] = useState("");
-
-  const [newTeamName, setNewTeamName] = useState("");
-  const [newTeamRole, setNewTeamRole] = useState("");
-  const [newTeamBio, setNewTeamBio] = useState("");
-  const [newTeamLinkedin, setNewTeamLinkedin] = useState("");
-  const [newTeamGithub, setNewTeamGithub] = useState("");
-
+  const [reviews, setReviews] = useState(defaultReviews);
   const [newReviewName, setNewReviewName] = useState("");
   const [newReviewRole, setNewReviewRole] = useState("");
   const [newReviewText, setNewReviewText] = useState("");
-
-  const [editingProjectIndex, setEditingProjectIndex] = useState(null);
-  const [editingTeamIndex, setEditingTeamIndex] = useState(null);
-
-  const [showAdminLogin, setShowAdminLogin] = useState(false);
-  const [adminPassword, setAdminPassword] = useState("");
-  const [adminError, setAdminError] = useState("");
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    window.localStorage.setItem("isAdmin", isAdmin ? "true" : "false");
-  }, [isAdmin]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    window.localStorage.setItem("projects", JSON.stringify(projects));
-  }, [projects]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    window.localStorage.setItem("teamMembers", JSON.stringify(teamMembers));
-  }, [teamMembers]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    window.localStorage.setItem("reviews", JSON.stringify(reviews));
-  }, [reviews]);
-
-  const handleAdminLogin = (e) => {
-    e.preventDefault();
-    if (adminPassword === ADMIN_PASSWORD) {
-      setIsAdmin(true);
-      setShowAdminLogin(false);
-      setAdminPassword("");
-      setAdminError("");
-    } else {
-      setAdminError("Incorrect password");
-    }
-  };
-
-  const handleAdminLogout = () => {
-    setIsAdmin(false);
-  };
-
-  const handleAddProject = (e) => {
-    e.preventDefault();
-    if (!newProjectTitle.trim() || !newProjectDesc.trim()) return;
-    if (editingProjectIndex !== null && editingProjectIndex >= 0) {
-      const updated = [...projects];
-      const existing = updated[editingProjectIndex];
-      updated[editingProjectIndex] = {
-        ...existing,
-        title: newProjectTitle.trim(),
-        desc: newProjectDesc.trim(),
-        githubUrl: newProjectGithub.trim(),
-        demoUrl: newProjectDemo.trim(),
-        thumbnailUrl: newProjectThumbnail.trim() || existing.thumbnailUrl || ""
-      };
-      setProjects(updated);
-      setEditingProjectIndex(null);
-    } else {
-      setProjects([
-        ...projects,
-        {
-          title: newProjectTitle.trim(),
-          desc: newProjectDesc.trim(),
-          gradient:
-            "linear-gradient(135deg, rgba(67, 97, 238, 0.2), rgba(176, 38, 255, 0.15))",
-          githubUrl: newProjectGithub.trim(),
-          demoUrl: newProjectDemo.trim(),
-          thumbnailUrl: newProjectThumbnail.trim()
-        }
-      ]);
-    }
-    setNewProjectTitle("");
-    setNewProjectDesc("");
-    setNewProjectGithub("");
-    setNewProjectDemo("");
-    setNewProjectThumbnail("");
-  };
-
-  const handleRemoveProject = (index) => {
-    setProjects(projects.filter((_, i) => i !== index));
-  };
-
-  const handleAddTeamMember = (e) => {
-    e.preventDefault();
-    if (!newTeamName.trim() || !newTeamRole.trim() || !newTeamBio.trim()) return;
-    const initials = newTeamName
-      .split(" ")
-      .filter(Boolean)
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase()
-      .slice(0, 2);
-    const borderColor = "rgba(74, 144, 226, 0.3)";
-    if (editingTeamIndex !== null && editingTeamIndex >= 0) {
-      const updated = [...teamMembers];
-      const existing = updated[editingTeamIndex];
-      updated[editingTeamIndex] = {
-        ...existing,
-        name: newTeamName.trim(),
-        role: newTeamRole.trim(),
-        bio: newTeamBio.trim(),
-        linkedinUrl: newTeamLinkedin.trim(),
-        githubUrl: newTeamGithub.trim()
-      };
-      setTeamMembers(updated);
-      setEditingTeamIndex(null);
-    } else {
-      setTeamMembers([
-        ...teamMembers,
-        {
-          name: newTeamName.trim(),
-          role: newTeamRole.trim(),
-          bio: newTeamBio.trim(),
-          gradient: "linear-gradient(135deg, var(--overlay-1), transparent)",
-          borderColor,
-          initials,
-          linkedinUrl: newTeamLinkedin.trim(),
-          githubUrl: newTeamGithub.trim()
-        }
-      ]);
-    }
-    setNewTeamName("");
-    setNewTeamRole("");
-    setNewTeamBio("");
-    setNewTeamLinkedin("");
-    setNewTeamGithub("");
-  };
-
-  const handleRemoveTeamMember = (index) => {
-    setTeamMembers(teamMembers.filter((_, i) => i !== index));
-  };
 
   const handleAddReview = (e) => {
     e.preventDefault();
@@ -375,11 +252,6 @@ export default function Home() {
     setNewReviewName("");
     setNewReviewRole("");
     setNewReviewText("");
-  };
-
-  const handleRemoveReview = (index) => {
-    if (!isAdmin) return;
-    setReviews(reviews.filter((_, i) => i !== index));
   };
 
   return (
@@ -448,7 +320,7 @@ export default function Home() {
               letterSpacing: "1px"
             }}
           >
-            Meet the Flying Robot
+            Gale Grid
           </Motion.div>
 
           <Motion.h1
@@ -462,7 +334,7 @@ export default function Home() {
               fontWeight: 800
             }}
           >
-            We Build Futuristic
+            We Build High-Impact
             <br />
             <span style={{ 
               background: "linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%)",
@@ -470,7 +342,7 @@ export default function Home() {
               WebkitTextFillColor: "transparent",
               backgroundClip: "text"
             }}>
-              Web Experiences
+              Web &amp; Mobile Experiences
             </span>
           </Motion.h1>
 
@@ -486,7 +358,8 @@ export default function Home() {
               maxWidth: "600px"
             }}
           >
-            High-performance, modern websites with immersive 3D visuals and cutting-edge technology that push the boundaries of digital innovation.
+            Modern, scalable websites and mobile applications designed to grow your
+            business, improve user engagement, and increase conversions.
           </Motion.p>
 
           <Motion.div
@@ -579,9 +452,9 @@ export default function Home() {
             color: "var(--text-secondary)",
             marginBottom: 40
           }}>
-            RoboStudio is a boutique agency crafting fast, delightful web apps. We blend
-            modern frontend stacks with subtle motion and accessible 3D to deliver
-            standout digital products that captivate and convert.
+            GALE GRID is a digital studio focused on high-impact web and mobile
+            experiences. We combine modern engineering, thoughtful design, and smooth
+            motion to build products that feel fast, intuitive, and truly memorable.
           </p>
           <div style={{
             display: "grid",
@@ -684,33 +557,57 @@ export default function Home() {
                     overflow: "hidden"
                   }}
                 >
-                  {/* Avatar Circle */}
-                  <div style={{
-                    width: "100px",
-                    height: "100px",
-                    borderRadius: "50%",
-                    margin: "0 auto 24px",
-                    background: `linear-gradient(135deg, ${member.borderColor.replace('0.3', '0.4')}, ${member.borderColor.replace('0.3', '0.2')})`,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "32px",
-                    fontWeight: 700,
-                    color: "var(--accent)",
-                    boxShadow: `0 8px 32px ${member.borderColor}`,
-                    position: "relative"
-                  }}>
-                    {member.initials}
-                    <div style={{
-                      position: "absolute",
-                      inset: "-2px",
+                  {/* Avatar: show image if available, otherwise initials */}
+                  <div
+                    style={{
+                      width: "100px",
+                      height: "100px",
                       borderRadius: "50%",
-                      padding: "2px",
-                      background: `linear-gradient(135deg, ${member.borderColor.replace('0.3', '0.6')}, transparent)`,
-                      WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                      WebkitMaskComposite: "xor",
-                      maskComposite: "exclude"
-                    }} />
+                      margin: "0 auto 24px",
+                      background: `linear-gradient(135deg, ${member.borderColor.replace('0.3', '0.4')}, ${member.borderColor.replace('0.3', '0.2')})`,
+                      boxShadow: `0 8px 32px ${member.borderColor}`,
+                      position: "relative",
+                      overflow: "hidden",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}
+                  >
+                    {member.imageUrl ? (
+                      <img
+                        src={member.imageUrl}
+                        alt={member.name}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          borderRadius: "50%"
+                        }}
+                      />
+                    ) : (
+                      <span
+                        style={{
+                          fontSize: "32px",
+                          fontWeight: 700,
+                          color: "var(--accent)"
+                        }}
+                      >
+                        {member.initials}
+                      </span>
+                    )}
+                    <div
+                      style={{
+                        position: "absolute",
+                        inset: "-2px",
+                        borderRadius: "50%",
+                        padding: "2px",
+                        background: `linear-gradient(135deg, ${member.borderColor.replace('0.3', '0.6')}, transparent)`,
+                        WebkitMask:
+                          "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                        WebkitMaskComposite: "xor",
+                        maskComposite: "exclude"
+                      }}
+                    />
                   </div>
 
                   <h3 style={{
@@ -756,13 +653,23 @@ export default function Home() {
                     {[
                       {
                         key: "linkedin",
-                        icon: "💼",
                         url: member.linkedinUrl
                       },
                       {
                         key: "github",
-                        icon: "⚡",
                         url: member.githubUrl
+                       },
+                       {
+                         key: "facebook",
+                         url: member.facebookUrl
+                       },
+                       {
+                         key: "portfolio",
+                         url: member.portfolioUrl
+                       },
+                       {
+                         key: "cv",
+                         url: member.cvUrl
                       }
                     ]
                       .filter((s) => s.url)
@@ -800,171 +707,15 @@ export default function Home() {
                               e.currentTarget.style.boxShadow = "none";
                             }}
                           >
-                            <span style={{ fontSize: "18px" }}>{social.icon}</span>
+                              <SocialIcon type={social.key} />
                           </Motion.div>
                         </a>
                       ))}
                   </div>
 
-                  {isAdmin && (
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: 16,
-                        right: 16,
-                        display: "flex",
-                        gap: 8
-                      }}
-                    >
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setEditingTeamIndex(index);
-                          setNewTeamName(member.name || "");
-                          setNewTeamRole(member.role || "");
-                          setNewTeamBio(member.bio || "");
-                          setNewTeamLinkedin(member.linkedinUrl || "");
-                          setNewTeamGithub(member.githubUrl || "");
-                          const section = document.getElementById("team");
-                          if (section) {
-                            const rect = section.getBoundingClientRect();
-                            const offset = window.scrollY + rect.top - 100;
-                            window.scrollTo({ top: offset, behavior: "smooth" });
-                          }
-                        }}
-                        style={{
-                          padding: "6px 10px",
-                          fontSize: "11px",
-                          borderRadius: "999px",
-                          background: "rgba(0,0,0,0.4)",
-                          border: "1px solid var(--border)",
-                          color: "var(--text-primary)",
-                          cursor: "pointer"
-                        }}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveTeamMember(index)}
-                        style={{
-                          padding: "6px 10px",
-                          fontSize: "11px",
-                          borderRadius: "999px",
-                          background: "rgba(0,0,0,0.4)",
-                          border: "1px solid var(--border)",
-                          color: "var(--text-primary)",
-                          cursor: "pointer"
-                        }}
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  )}
                 </Motion.div>
               ))}
             </div>
-
-            {isAdmin && (
-              <div
-                style={{
-                  marginTop: 40,
-                  maxWidth: 600,
-                  marginInline: "auto",
-                  padding: 24,
-                  borderRadius: 16,
-                  background: "var(--card-surface)",
-                  border: "1px solid var(--border)",
-                  boxShadow: "var(--shadow-md)"
-                }}
-              >
-                <h3
-                  style={{
-                    marginBottom: 16,
-                    fontSize: 18,
-                    fontWeight: 600,
-                    color: "var(--text-primary)"
-                  }}
-                >
-                  {editingTeamIndex !== null ? "Admin: Edit Team Member" : "Admin: Add Team Member"}
-                </h3>
-                <form
-                  onSubmit={handleAddTeamMember}
-                  style={{ display: "grid", gap: 12 }}
-                >
-                  <input
-                    placeholder="Name"
-                    value={newTeamName}
-                    onChange={(e) => setNewTeamName(e.target.value)}
-                    style={{
-                      padding: "12px 16px",
-                      borderRadius: 12,
-                      border: "1px solid var(--border)",
-                      background: "var(--card-surface)",
-                      color: "var(--text-primary)",
-                      fontSize: 14
-                    }}
-                  />
-                  <input
-                    placeholder="Role"
-                    value={newTeamRole}
-                    onChange={(e) => setNewTeamRole(e.target.value)}
-                    style={{
-                      padding: "12px 16px",
-                      borderRadius: 12,
-                      border: "1px solid var(--border)",
-                      background: "var(--card-surface)",
-                      color: "var(--text-primary)",
-                      fontSize: 14
-                    }}
-                  />
-                  <textarea
-                    placeholder="Short bio"
-                    rows={3}
-                    value={newTeamBio}
-                    onChange={(e) => setNewTeamBio(e.target.value)}
-                    style={{
-                      padding: "12px 16px",
-                      borderRadius: 12,
-                      border: "1px solid var(--border)",
-                      background: "var(--card-surface)",
-                      color: "var(--text-primary)",
-                      fontSize: 14,
-                      resize: "vertical"
-                    }}
-                  />
-                  <input
-                    placeholder="LinkedIn URL"
-                    value={newTeamLinkedin}
-                    onChange={(e) => setNewTeamLinkedin(e.target.value)}
-                    style={{
-                      padding: "12px 16px",
-                      borderRadius: 12,
-                      border: "1px solid var(--border)",
-                      background: "var(--card-surface)",
-                      color: "var(--text-primary)",
-                      fontSize: 14
-                    }}
-                  />
-                  <input
-                    placeholder="GitHub URL"
-                    value={newTeamGithub}
-                    onChange={(e) => setNewTeamGithub(e.target.value)}
-                    style={{
-                      padding: "12px 16px",
-                      borderRadius: 12,
-                      border: "1px solid var(--border)",
-                      background: "var(--card-surface)",
-                      color: "var(--text-primary)",
-                      fontSize: 14
-                    }}
-                  />
-                  <button type="submit" style={{ alignSelf: "flex-end" }}>
-                    Add Member
-                  </button>
-                </form>
-              </div>
-            )}
           </Motion.div>
         </Motion.div>
       </Section>
@@ -1084,13 +835,13 @@ export default function Home() {
                 transition: { duration: 0.3 }
               }}
               style={{
-                height: 280,
+                minHeight: 320,
                 borderRadius: "20px",
                 border: "1px solid var(--border)",
                 background: "var(--card-surface)",
                 backdropFilter: "blur(10px)",
                 boxShadow: "var(--shadow-md)",
-                padding: "32px",
+                padding: "24px 24px 28px",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
@@ -1098,25 +849,19 @@ export default function Home() {
                 position: "relative",
                 overflow: "hidden"
               }}
-              onClick={() => {
-                if (project.demoUrl) {
-                  window.open(project.demoUrl, "_blank", "noopener,noreferrer");
-                }
-              }}
             >
               <div>
                 {project.thumbnailUrl ? (
                   <div
+                    className="project-card-media"
                     style={{
                       marginBottom: 20,
                       borderRadius: 14,
                       overflow: "hidden",
                       border: "1px solid var(--border)",
                       background: "var(--overlay-1)",
-                      height: 160,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center"
+                      height: 180,
+                      position: "relative"
                     }}
                   >
                     <img
@@ -1129,6 +874,36 @@ export default function Home() {
                         display: "block"
                       }}
                     />
+                    {project.demoUrl && (
+                      <div className="project-card-media-overlay">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            window.open(
+                              project.demoUrl,
+                              "_blank",
+                              "noopener,noreferrer"
+                            );
+                          }}
+                          style={{
+                            padding: "10px 26px",
+                            fontSize: "14px",
+                            borderRadius: 999,
+                            background:
+                              "linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%)",
+                            color: "#fff",
+                            border: "none",
+                            boxShadow: "0 10px 25px rgba(0,0,0,0.45)",
+                            cursor: "pointer",
+                            letterSpacing: "0.08em",
+                            textTransform: "uppercase"
+                          }}
+                        >
+                          Watch demo
+                        </button>
+                      </div>
+                    )}
                   </div>
                 ) : null}
                 <h3 style={{ 
@@ -1156,27 +931,6 @@ export default function Home() {
                   flexWrap: "wrap"
                 }}
               >
-                {project.demoUrl && (
-                  <a
-                    href={project.demoUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    style={{ textDecoration: "none" }}
-                  >
-                    <button
-                      type="button"
-                      style={{
-                        padding: "10px 24px",
-                        fontSize: "14px",
-                        background: "var(--link-hover-bg)",
-                        border: "1px solid var(--border-strong)",
-                        color: "var(--accent)"
-                      }}
-                    >
-                      Live Demo
-                    </button>
-                  </a>
-                )}
                 {project.githubUrl && (
                   <a
                     href={project.githubUrl}
@@ -1199,165 +953,9 @@ export default function Home() {
                   </a>
                 )}
               </div>
-              {isAdmin && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 16,
-                    right: 16,
-                    display: "flex",
-                    gap: 8
-                  }}
-                >
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setEditingProjectIndex(index);
-                      setNewProjectTitle(project.title || "");
-                      setNewProjectDesc(project.desc || "");
-                      setNewProjectGithub(project.githubUrl || "");
-                      setNewProjectDemo(project.demoUrl || "");
-                      setNewProjectThumbnail(project.thumbnailUrl || "");
-                      const section = document.getElementById("projects");
-                      if (section) {
-                        const rect = section.getBoundingClientRect();
-                        const offset = window.scrollY + rect.top - 100;
-                        window.scrollTo({ top: offset, behavior: "smooth" });
-                      }
-                    }}
-                    style={{
-                      padding: "6px 10px",
-                      fontSize: "11px",
-                      borderRadius: "999px",
-                      background: "rgba(0,0,0,0.4)",
-                      border: "1px solid var(--border)",
-                      color: "var(--text-primary)",
-                      cursor: "pointer"
-                    }}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveProject(index)}
-                    style={{
-                      padding: "6px 10px",
-                      fontSize: "11px",
-                      borderRadius: "999px",
-                      background: "rgba(0,0,0,0.4)",
-                      border: "1px solid var(--border)",
-                      color: "var(--text-primary)",
-                      cursor: "pointer"
-                    }}
-                  >
-                    Remove
-                  </button>
-                </div>
-              )}
             </Motion.div>
           ))}
         </Motion.div>
-
-        {isAdmin && (
-          <div
-            style={{
-              marginTop: 40,
-              maxWidth: 600,
-              marginInline: "auto",
-              padding: 24,
-              borderRadius: 16,
-              background: "var(--card-surface)",
-              border: "1px solid var(--border)",
-              boxShadow: "var(--shadow-md)"
-            }}
-          >
-            <h3
-              style={{
-                marginBottom: 16,
-                fontSize: 18,
-                fontWeight: 600,
-                color: "var(--text-primary)"
-              }}
-            >
-              {editingProjectIndex !== null ? "Admin: Edit Project" : "Admin: Add Project"}
-            </h3>
-            <form
-              onSubmit={handleAddProject}
-              style={{ display: "grid", gap: 12 }}
-            >
-              <input
-                placeholder="Project title"
-                value={newProjectTitle}
-                onChange={(e) => setNewProjectTitle(e.target.value)}
-                style={{
-                  padding: "12px 16px",
-                  borderRadius: 12,
-                  border: "1px solid var(--border)",
-                  background: "var(--card-surface)",
-                  color: "var(--text-primary)",
-                  fontSize: 14
-                }}
-              />
-              <textarea
-                placeholder="Short description"
-                rows={3}
-                value={newProjectDesc}
-                onChange={(e) => setNewProjectDesc(e.target.value)}
-                style={{
-                  padding: "12px 16px",
-                  borderRadius: 12,
-                  border: "1px solid var(--border)",
-                  background: "var(--card-surface)",
-                  color: "var(--text-primary)",
-                  fontSize: 14,
-                  resize: "vertical"
-                }}
-              />
-              <input
-                placeholder="Thumbnail image URL (optional)"
-                value={newProjectThumbnail}
-                onChange={(e) => setNewProjectThumbnail(e.target.value)}
-                style={{
-                  padding: "12px 16px",
-                  borderRadius: 12,
-                  border: "1px solid var(--border)",
-                  background: "var(--card-surface)",
-                  color: "var(--text-primary)",
-                  fontSize: 14
-                }}
-              />
-              <input
-                placeholder="GitHub URL"
-                value={newProjectGithub}
-                onChange={(e) => setNewProjectGithub(e.target.value)}
-                style={{
-                  padding: "12px 16px",
-                  borderRadius: 12,
-                  border: "1px solid var(--border)",
-                  background: "var(--card-surface)",
-                  color: "var(--text-primary)",
-                  fontSize: 14
-                }}
-              />
-              <input
-                placeholder="Demo URL"
-                value={newProjectDemo}
-                onChange={(e) => setNewProjectDemo(e.target.value)}
-                style={{
-                  padding: "12px 16px",
-                  borderRadius: 12,
-                  border: "1px solid var(--border)",
-                  background: "var(--card-surface)",
-                  color: "var(--text-primary)",
-                  fontSize: 14
-                }}
-              />
-              <button type="submit" style={{ alignSelf: "flex-end" }}>
-                Add Project
-              </button>
-            </form>
-          </div>
-        )}
       </Section>
 
       {/* REVIEWS SECTION */}
@@ -1419,26 +1017,6 @@ export default function Home() {
                   {review.role}
                 </p>
               </div>
-              {isAdmin && (
-                <button
-                  type="button"
-                  onClick={() => handleRemoveReview(index)}
-                  style={{
-                    position: "absolute",
-                    top: 16,
-                    right: 16,
-                    padding: "6px 10px",
-                    fontSize: "11px",
-                    borderRadius: "999px",
-                    background: "rgba(0,0,0,0.4)",
-                    border: "1px solid var(--border)",
-                    color: "var(--text-primary)",
-                    cursor: "pointer"
-                  }}
-                >
-                  Remove
-                </button>
-              )}
             </Motion.div>
           ))}
         </Motion.div>
@@ -1516,7 +1094,6 @@ export default function Home() {
           </form>
         </div>
       </Section>
-
       {/* CONTACT SECTION */}
       <Section id="contact" title="Get In Touch">
         <Motion.div
@@ -1625,155 +1202,6 @@ export default function Home() {
           </form>
         </Motion.div>
       </Section>
-      <div
-        style={{
-          position: "fixed",
-          bottom: 24,
-          right: 24,
-          zIndex: 50
-        }}
-      >
-        {!isAdmin ? (
-          showAdminLogin ? (
-            <div
-              style={{
-                padding: 16,
-                borderRadius: 16,
-                background: "var(--card-surface)",
-                border: "1px solid var(--border)",
-                boxShadow: "var(--shadow-md)",
-                minWidth: 260
-              }}
-            >
-              <h4
-                style={{
-                  marginBottom: 12,
-                  fontSize: 14,
-                  fontWeight: 600,
-                  color: "var(--text-primary)"
-                }}
-              >
-                Admin Login
-              </h4>
-              <form
-                onSubmit={handleAdminLogin}
-                style={{ display: "grid", gap: 10 }}
-              >
-                <input
-                  type="password"
-                  placeholder="Password"
-                  value={adminPassword}
-                  onChange={(e) => setAdminPassword(e.target.value)}
-                  style={{
-                    padding: "10px 14px",
-                    borderRadius: 12,
-                    border: "1px solid var(--border)",
-                    background: "var(--card-surface)",
-                    color: "var(--text-primary)",
-                    fontSize: 13
-                  }}
-                />
-                {adminError && (
-                  <div
-                    style={{
-                      fontSize: 12,
-                      color: "#ff6b6b"
-                    }}
-                  >
-                    {adminError}
-                  </div>
-                )}
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    gap: 8,
-                    marginTop: 4
-                  }}
-                >
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowAdminLogin(false);
-                      setAdminPassword("");
-                      setAdminError("");
-                    }}
-                    style={{
-                      padding: "6px 12px",
-                      fontSize: 12,
-                      background: "transparent",
-                      border: "1px solid var(--border)",
-                      color: "var(--text-secondary)"
-                    }}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    style={{ padding: "6px 12px", fontSize: 12 }}
-                  >
-                    Login
-                  </button>
-                </div>
-              </form>
-            </div>
-          ) : (
-            <button
-              type="button"
-              onClick={() => setShowAdminLogin(true)}
-              style={{
-                padding: "8px 14px",
-                fontSize: 12,
-                borderRadius: 999,
-                background: "var(--card-surface)",
-                border: "1px solid var(--border)",
-                color: "var(--text-secondary)",
-                boxShadow: "var(--shadow-md)",
-                cursor: "pointer"
-              }}
-            >
-              Admin Login
-            </button>
-          )
-        ) : (
-          <div
-            style={{
-              padding: 10,
-              borderRadius: 999,
-              background: "var(--card-surface)",
-              border: "1px solid var(--border)",
-              boxShadow: "var(--shadow-md)",
-              display: "flex",
-              alignItems: "center",
-              gap: 8
-            }}
-          >
-            <span
-              style={{
-                fontSize: 12,
-                color: "var(--text-secondary)"
-              }}
-            >
-              Admin mode
-            </span>
-            <button
-              type="button"
-              onClick={handleAdminLogout}
-              style={{
-                padding: "6px 10px",
-                fontSize: 12,
-                borderRadius: 999,
-                background: "transparent",
-                border: "1px solid var(--border)",
-                color: "var(--text-secondary)",
-                cursor: "pointer"
-              }}
-            >
-              Logout
-            </button>
-          </div>
-        )}
-      </div>
     </main>
   );
 }
