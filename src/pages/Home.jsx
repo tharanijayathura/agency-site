@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Hero3D from "../components/Hero3D";
 import { motion as Motion } from "framer-motion";
 
@@ -33,6 +33,129 @@ const Section = ({ id, title, children, className = "" }) => (
   </section>
 );
 
+const ADMIN_PASSWORD = "changeme-admin";
+
+const defaultTeamMembers = [
+  {
+    name: "Alex Chen",
+    role: "Creative Director",
+    bio: "Visionary designer with 10+ years crafting digital experiences",
+    gradient: "linear-gradient(135deg, var(--overlay-1), transparent)",
+    borderColor: "rgba(74, 144, 226, 0.3)",
+    initials: "AC",
+    linkedinUrl: "https://www.linkedin.com/",
+    githubUrl: "https://github.com/"
+  },
+  {
+    name: "Sarah Martinez",
+    role: "Lead Developer",
+    bio: "Full-stack wizard specializing in 3D web technologies",
+    gradient: "linear-gradient(135deg, var(--overlay-2), transparent)",
+    borderColor: "rgba(135, 206, 235, 0.3)",
+    initials: "SM",
+    linkedinUrl: "https://www.linkedin.com/",
+    githubUrl: "https://github.com/"
+  },
+  {
+    name: "Jordan Kim",
+    role: "3D Artist",
+    bio: "Bringing virtual worlds to life with stunning 3D models",
+    gradient: "linear-gradient(135deg, rgba(255, 107, 107, 0.12), transparent)",
+    borderColor: "rgba(255, 107, 107, 0.3)",
+    initials: "JK",
+    linkedinUrl: "https://www.linkedin.com/",
+    githubUrl: "https://github.com/"
+  },
+  {
+    name: "Taylor Reed",
+    role: "UX Strategist",
+    bio: "Transforming complex ideas into intuitive user journeys",
+    gradient: "linear-gradient(135deg, rgba(46, 92, 138, 0.12), transparent)",
+    borderColor: "rgba(46, 92, 138, 0.3)",
+    initials: "TR",
+    linkedinUrl: "https://www.linkedin.com/",
+    githubUrl: "https://github.com/"
+  }
+];
+
+const defaultProjects = [
+  {
+    title: "E-commerce Platform",
+    desc: "High-performance online store with 3D product visualization",
+    gradient:
+      "linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(176, 38, 255, 0.15))",
+    githubUrl: "",
+    demoUrl: "",
+    thumbnailUrl: ""
+  },
+  {
+    title: "Interactive Dashboard",
+    desc: "Real-time data visualization with immersive 3D charts",
+    gradient:
+      "linear-gradient(135deg, rgba(176, 38, 255, 0.2), rgba(255, 0, 110, 0.15))",
+    githubUrl: "",
+    demoUrl: "",
+    thumbnailUrl: ""
+  },
+  {
+    title: "Virtual Showroom",
+    desc: "Immersive 3D environment for product exploration",
+    gradient:
+      "linear-gradient(135deg, rgba(255, 0, 110, 0.2), rgba(0, 240, 255, 0.15))",
+    githubUrl: "",
+    demoUrl: "",
+    thumbnailUrl: ""
+  },
+  {
+    title: "AI-Powered Analytics",
+    desc: "Advanced analytics platform with predictive insights",
+    gradient:
+      "linear-gradient(135deg, rgba(67, 97, 238, 0.2), rgba(176, 38, 255, 0.15))",
+    githubUrl: "",
+    demoUrl: "",
+    thumbnailUrl: ""
+  },
+  {
+    title: "Cloud Infrastructure",
+    desc: "Scalable cloud solutions for enterprise clients",
+    gradient:
+      "linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(67, 97, 238, 0.15))",
+    githubUrl: "",
+    demoUrl: "",
+    thumbnailUrl: ""
+  },
+  {
+    title: "Mobile Experience",
+    desc: "Cross-platform mobile apps with native performance",
+    gradient:
+      "linear-gradient(135deg, rgba(255, 0, 110, 0.2), rgba(0, 240, 255, 0.15))",
+    githubUrl: "",
+    demoUrl: "",
+    thumbnailUrl: ""
+  }
+];
+
+const defaultReviews = [
+  {
+    name: "Ava K.",
+    role: "CEO, TechCorp",
+    text:
+      "Their attention to performance and detail made a huge difference for our conversion rates. The 3D elements are stunning and load instantly."
+  },
+  {
+    name: "Liam N.",
+    role: "Founder, StartupXYZ",
+    text:
+      "The 3D elements are tasteful and fast. Our site finally feels alive. The team delivered exactly what we envisioned and more."
+  },
+  {
+    name: "Noah P.",
+    role: "Director, DesignStudio",
+    text:
+      "Smooth delivery, great communication, and a beautiful result. Highly recommended. They transformed our vision into reality."
+  }
+];
+
 export default function Home() {
   const currentYear = new Date().getFullYear();
   const containerVariants = {
@@ -53,12 +176,211 @@ export default function Home() {
       transition: { duration: 0.5 }
     }
   };
+  const [isAdmin, setIsAdmin] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.localStorage.getItem("isAdmin") === "true";
+  });
 
+  const [projects, setProjects] = useState(() => {
+    if (typeof window === "undefined") return defaultProjects;
+    try {
+      const stored = window.localStorage.getItem("projects");
+      return stored ? JSON.parse(stored) : defaultProjects;
+    } catch {
+      return defaultProjects;
+    }
+  });
 
+  const [teamMembers, setTeamMembers] = useState(() => {
+    if (typeof window === "undefined") return defaultTeamMembers;
+    try {
+      const stored = window.localStorage.getItem("teamMembers");
+      return stored ? JSON.parse(stored) : defaultTeamMembers;
+    } catch {
+      return defaultTeamMembers;
+    }
+  });
 
+  const [reviews, setReviews] = useState(() => {
+    if (typeof window === "undefined") return defaultReviews;
+    try {
+      const stored = window.localStorage.getItem("reviews");
+      return stored ? JSON.parse(stored) : defaultReviews;
+    } catch {
+      return defaultReviews;
+    }
+  });
 
+  const [newProjectTitle, setNewProjectTitle] = useState("");
+  const [newProjectDesc, setNewProjectDesc] = useState("");
+  const [newProjectGithub, setNewProjectGithub] = useState("");
+  const [newProjectDemo, setNewProjectDemo] = useState("");
+  const [newProjectThumbnail, setNewProjectThumbnail] = useState("");
 
+  const [newTeamName, setNewTeamName] = useState("");
+  const [newTeamRole, setNewTeamRole] = useState("");
+  const [newTeamBio, setNewTeamBio] = useState("");
+  const [newTeamLinkedin, setNewTeamLinkedin] = useState("");
+  const [newTeamGithub, setNewTeamGithub] = useState("");
 
+  const [newReviewName, setNewReviewName] = useState("");
+  const [newReviewRole, setNewReviewRole] = useState("");
+  const [newReviewText, setNewReviewText] = useState("");
+
+  const [editingProjectIndex, setEditingProjectIndex] = useState(null);
+  const [editingTeamIndex, setEditingTeamIndex] = useState(null);
+
+  const [showAdminLogin, setShowAdminLogin] = useState(false);
+  const [adminPassword, setAdminPassword] = useState("");
+  const [adminError, setAdminError] = useState("");
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem("isAdmin", isAdmin ? "true" : "false");
+  }, [isAdmin]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem("projects", JSON.stringify(projects));
+  }, [projects]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem("teamMembers", JSON.stringify(teamMembers));
+  }, [teamMembers]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem("reviews", JSON.stringify(reviews));
+  }, [reviews]);
+
+  const handleAdminLogin = (e) => {
+    e.preventDefault();
+    if (adminPassword === ADMIN_PASSWORD) {
+      setIsAdmin(true);
+      setShowAdminLogin(false);
+      setAdminPassword("");
+      setAdminError("");
+    } else {
+      setAdminError("Incorrect password");
+    }
+  };
+
+  const handleAdminLogout = () => {
+    setIsAdmin(false);
+  };
+
+  const handleAddProject = (e) => {
+    e.preventDefault();
+    if (!newProjectTitle.trim() || !newProjectDesc.trim()) return;
+    if (editingProjectIndex !== null && editingProjectIndex >= 0) {
+      const updated = [...projects];
+      const existing = updated[editingProjectIndex];
+      updated[editingProjectIndex] = {
+        ...existing,
+        title: newProjectTitle.trim(),
+        desc: newProjectDesc.trim(),
+        githubUrl: newProjectGithub.trim(),
+        demoUrl: newProjectDemo.trim(),
+        thumbnailUrl: newProjectThumbnail.trim() || existing.thumbnailUrl || ""
+      };
+      setProjects(updated);
+      setEditingProjectIndex(null);
+    } else {
+      setProjects([
+        ...projects,
+        {
+          title: newProjectTitle.trim(),
+          desc: newProjectDesc.trim(),
+          gradient:
+            "linear-gradient(135deg, rgba(67, 97, 238, 0.2), rgba(176, 38, 255, 0.15))",
+          githubUrl: newProjectGithub.trim(),
+          demoUrl: newProjectDemo.trim(),
+          thumbnailUrl: newProjectThumbnail.trim()
+        }
+      ]);
+    }
+    setNewProjectTitle("");
+    setNewProjectDesc("");
+    setNewProjectGithub("");
+    setNewProjectDemo("");
+    setNewProjectThumbnail("");
+  };
+
+  const handleRemoveProject = (index) => {
+    setProjects(projects.filter((_, i) => i !== index));
+  };
+
+  const handleAddTeamMember = (e) => {
+    e.preventDefault();
+    if (!newTeamName.trim() || !newTeamRole.trim() || !newTeamBio.trim()) return;
+    const initials = newTeamName
+      .split(" ")
+      .filter(Boolean)
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+    const borderColor = "rgba(74, 144, 226, 0.3)";
+    if (editingTeamIndex !== null && editingTeamIndex >= 0) {
+      const updated = [...teamMembers];
+      const existing = updated[editingTeamIndex];
+      updated[editingTeamIndex] = {
+        ...existing,
+        name: newTeamName.trim(),
+        role: newTeamRole.trim(),
+        bio: newTeamBio.trim(),
+        linkedinUrl: newTeamLinkedin.trim(),
+        githubUrl: newTeamGithub.trim()
+      };
+      setTeamMembers(updated);
+      setEditingTeamIndex(null);
+    } else {
+      setTeamMembers([
+        ...teamMembers,
+        {
+          name: newTeamName.trim(),
+          role: newTeamRole.trim(),
+          bio: newTeamBio.trim(),
+          gradient: "linear-gradient(135deg, var(--overlay-1), transparent)",
+          borderColor,
+          initials,
+          linkedinUrl: newTeamLinkedin.trim(),
+          githubUrl: newTeamGithub.trim()
+        }
+      ]);
+    }
+    setNewTeamName("");
+    setNewTeamRole("");
+    setNewTeamBio("");
+    setNewTeamLinkedin("");
+    setNewTeamGithub("");
+  };
+
+  const handleRemoveTeamMember = (index) => {
+    setTeamMembers(teamMembers.filter((_, i) => i !== index));
+  };
+
+  const handleAddReview = (e) => {
+    e.preventDefault();
+    if (!newReviewName.trim() || !newReviewRole.trim() || !newReviewText.trim()) return;
+    setReviews([
+      ...reviews,
+      {
+        name: newReviewName.trim(),
+        role: newReviewRole.trim(),
+        text: newReviewText.trim()
+      }
+    ]);
+    setNewReviewName("");
+    setNewReviewRole("");
+    setNewReviewText("");
+  };
+
+  const handleRemoveReview = (index) => {
+    if (!isAdmin) return;
+    setReviews(reviews.filter((_, i) => i !== index));
+  };
 
   return (
     <main style={{ position: "relative", zIndex: 1 }}>
@@ -337,40 +659,7 @@ export default function Home() {
               maxWidth: "1200px",
               margin: "0 auto"
             }}>
-              {[
-                {
-                  name: "Alex Chen",
-                  role: "Creative Director",
-                  bio: "Visionary designer with 10+ years crafting digital experiences",
-                  gradient: "linear-gradient(135deg, var(--overlay-1), transparent)",
-                  borderColor: "var(--border)",
-                  initials: "AC"
-                },
-                {
-                  name: "Sarah Martinez",
-                  role: "Lead Developer",
-                  bio: "Full-stack wizard specializing in 3D web technologies",
-                  gradient: "linear-gradient(135deg, var(--overlay-2), transparent)",
-                  borderColor: "var(--border)",
-                  initials: "SM"
-                },
-                {
-                  name: "Jordan Kim",
-                  role: "3D Artist",
-                  bio: "Bringing virtual worlds to life with stunning 3D models",
-                  gradient: "linear-gradient(135deg, rgba(255, 107, 107, 0.12), transparent)",
-                  borderColor: "var(--border)",
-                  initials: "JK"
-                },
-                {
-                  name: "Taylor Reed",
-                  role: "UX Strategist",
-                  bio: "Transforming complex ideas into intuitive user journeys",
-                  gradient: "linear-gradient(135deg, rgba(46, 92, 138, 0.12), transparent)",
-                  borderColor: "var(--border)",
-                  initials: "TR"
-                }
-              ].map((member, index) => (
+              {teamMembers.map((member, index) => (
                 <Motion.div
                   key={index}
                   initial={{ opacity: 0, y: 30 }}
@@ -464,45 +753,218 @@ export default function Home() {
                     paddingTop: 24,
                     borderTop: `1px solid ${member.borderColor.replace('0.3', '0.2')}`
                   }}>
-                    {["linkedin", "twitter", "github"].map((social, i) => (
-                      <Motion.div
-                        key={i}
-                        whileHover={{ scale: 1.2, rotate: 5 }}
-                        whileTap={{ scale: 0.9 }}
+                    {[
+                      {
+                        key: "linkedin",
+                        icon: "💼",
+                        url: member.linkedinUrl
+                      },
+                      {
+                        key: "github",
+                        icon: "⚡",
+                        url: member.githubUrl
+                      }
+                    ]
+                      .filter((s) => s.url)
+                      .map((social, i) => (
+                        <a
+                          key={social.key + i}
+                          href={social.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          style={{ textDecoration: "none" }}
+                        >
+                          <Motion.div
+                            whileHover={{ scale: 1.2, rotate: 5 }}
+                            whileTap={{ scale: 0.9 }}
+                            style={{
+                              width: "36px",
+                              height: "36px",
+                              borderRadius: "8px",
+                              background: "var(--link-hover-bg)",
+                              border: `1px solid ${member.borderColor.replace('0.3', '0.2')}`,
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              cursor: "pointer",
+                              transition: "all 0.3s ease"
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.background = member.borderColor.replace('0.3', '0.15');
+                              e.currentTarget.style.borderColor = member.borderColor;
+                              e.currentTarget.style.boxShadow = `0 0 15px ${member.borderColor}`;
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.background = "rgba(74, 144, 226, 0.05)";
+                              e.currentTarget.style.borderColor = member.borderColor.replace('0.3', '0.2');
+                              e.currentTarget.style.boxShadow = "none";
+                            }}
+                          >
+                            <span style={{ fontSize: "18px" }}>{social.icon}</span>
+                          </Motion.div>
+                        </a>
+                      ))}
+                  </div>
+
+                  {isAdmin && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: 16,
+                        right: 16,
+                        display: "flex",
+                        gap: 8
+                      }}
+                    >
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setEditingTeamIndex(index);
+                          setNewTeamName(member.name || "");
+                          setNewTeamRole(member.role || "");
+                          setNewTeamBio(member.bio || "");
+                          setNewTeamLinkedin(member.linkedinUrl || "");
+                          setNewTeamGithub(member.githubUrl || "");
+                          const section = document.getElementById("team");
+                          if (section) {
+                            const rect = section.getBoundingClientRect();
+                            const offset = window.scrollY + rect.top - 100;
+                            window.scrollTo({ top: offset, behavior: "smooth" });
+                          }
+                        }}
                         style={{
-                          width: "36px",
-                          height: "36px",
-                          borderRadius: "8px",
-                          background: "var(--link-hover-bg)",
-                          border: `1px solid ${member.borderColor.replace('0.3', '0.2')}`,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          cursor: "pointer",
-                          transition: "all 0.3s ease"
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background = member.borderColor.replace('0.3', '0.15');
-                          e.currentTarget.style.borderColor = member.borderColor;
-                          e.currentTarget.style.boxShadow = `0 0 15px ${member.borderColor}`;
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = "rgba(74, 144, 226, 0.05)";
-                          e.currentTarget.style.borderColor = member.borderColor.replace('0.3', '0.2');
-                          e.currentTarget.style.boxShadow = "none";
+                          padding: "6px 10px",
+                          fontSize: "11px",
+                          borderRadius: "999px",
+                          background: "rgba(0,0,0,0.4)",
+                          border: "1px solid var(--border)",
+                          color: "var(--text-primary)",
+                          cursor: "pointer"
                         }}
                       >
-                        <span style={{ fontSize: "18px" }}>
-                          {social === "linkedin" && "💼"}
-                          {social === "twitter" && "🐦"}
-                          {social === "github" && "⚡"}
-                        </span>
-                      </Motion.div>
-                    ))}
-                  </div>
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveTeamMember(index)}
+                        style={{
+                          padding: "6px 10px",
+                          fontSize: "11px",
+                          borderRadius: "999px",
+                          background: "rgba(0,0,0,0.4)",
+                          border: "1px solid var(--border)",
+                          color: "var(--text-primary)",
+                          cursor: "pointer"
+                        }}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  )}
                 </Motion.div>
               ))}
             </div>
+
+            {isAdmin && (
+              <div
+                style={{
+                  marginTop: 40,
+                  maxWidth: 600,
+                  marginInline: "auto",
+                  padding: 24,
+                  borderRadius: 16,
+                  background: "var(--card-surface)",
+                  border: "1px solid var(--border)",
+                  boxShadow: "var(--shadow-md)"
+                }}
+              >
+                <h3
+                  style={{
+                    marginBottom: 16,
+                    fontSize: 18,
+                    fontWeight: 600,
+                    color: "var(--text-primary)"
+                  }}
+                >
+                  {editingTeamIndex !== null ? "Admin: Edit Team Member" : "Admin: Add Team Member"}
+                </h3>
+                <form
+                  onSubmit={handleAddTeamMember}
+                  style={{ display: "grid", gap: 12 }}
+                >
+                  <input
+                    placeholder="Name"
+                    value={newTeamName}
+                    onChange={(e) => setNewTeamName(e.target.value)}
+                    style={{
+                      padding: "12px 16px",
+                      borderRadius: 12,
+                      border: "1px solid var(--border)",
+                      background: "var(--card-surface)",
+                      color: "var(--text-primary)",
+                      fontSize: 14
+                    }}
+                  />
+                  <input
+                    placeholder="Role"
+                    value={newTeamRole}
+                    onChange={(e) => setNewTeamRole(e.target.value)}
+                    style={{
+                      padding: "12px 16px",
+                      borderRadius: 12,
+                      border: "1px solid var(--border)",
+                      background: "var(--card-surface)",
+                      color: "var(--text-primary)",
+                      fontSize: 14
+                    }}
+                  />
+                  <textarea
+                    placeholder="Short bio"
+                    rows={3}
+                    value={newTeamBio}
+                    onChange={(e) => setNewTeamBio(e.target.value)}
+                    style={{
+                      padding: "12px 16px",
+                      borderRadius: 12,
+                      border: "1px solid var(--border)",
+                      background: "var(--card-surface)",
+                      color: "var(--text-primary)",
+                      fontSize: 14,
+                      resize: "vertical"
+                    }}
+                  />
+                  <input
+                    placeholder="LinkedIn URL"
+                    value={newTeamLinkedin}
+                    onChange={(e) => setNewTeamLinkedin(e.target.value)}
+                    style={{
+                      padding: "12px 16px",
+                      borderRadius: 12,
+                      border: "1px solid var(--border)",
+                      background: "var(--card-surface)",
+                      color: "var(--text-primary)",
+                      fontSize: 14
+                    }}
+                  />
+                  <input
+                    placeholder="GitHub URL"
+                    value={newTeamGithub}
+                    onChange={(e) => setNewTeamGithub(e.target.value)}
+                    style={{
+                      padding: "12px 16px",
+                      borderRadius: 12,
+                      border: "1px solid var(--border)",
+                      background: "var(--card-surface)",
+                      color: "var(--text-primary)",
+                      fontSize: 14
+                    }}
+                  />
+                  <button type="submit" style={{ alignSelf: "flex-end" }}>
+                    Add Member
+                  </button>
+                </form>
+              </div>
+            )}
           </Motion.div>
         </Motion.div>
       </Section>
@@ -612,14 +1074,7 @@ export default function Home() {
             gap: 32
           }}
         >
-          {[
-            { title: "E-commerce Platform", desc: "High-performance online store with 3D product visualization", gradient: "linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(176, 38, 255, 0.15))" },
-            { title: "Interactive Dashboard", desc: "Real-time data visualization with immersive 3D charts", gradient: "linear-gradient(135deg, rgba(176, 38, 255, 0.2), rgba(255, 0, 110, 0.15))" },
-            { title: "Virtual Showroom", desc: "Immersive 3D environment for product exploration", gradient: "linear-gradient(135deg, rgba(255, 0, 110, 0.2), rgba(0, 240, 255, 0.15))" },
-            { title: "AI-Powered Analytics", desc: "Advanced analytics platform with predictive insights", gradient: "linear-gradient(135deg, rgba(67, 97, 238, 0.2), rgba(176, 38, 255, 0.15))" },
-            { title: "Cloud Infrastructure", desc: "Scalable cloud solutions for enterprise clients", gradient: "linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(67, 97, 238, 0.15))" },
-            { title: "Mobile Experience", desc: "Cross-platform mobile apps with native performance", gradient: "linear-gradient(135deg, rgba(255, 0, 110, 0.2), rgba(0, 240, 255, 0.15))" }
-          ].map((project, index) => (
+          {projects.map((project, index) => (
             <Motion.div
               key={index}
               variants={itemVariants}
@@ -643,8 +1098,39 @@ export default function Home() {
                 position: "relative",
                 overflow: "hidden"
               }}
+              onClick={() => {
+                if (project.demoUrl) {
+                  window.open(project.demoUrl, "_blank", "noopener,noreferrer");
+                }
+              }}
             >
               <div>
+                {project.thumbnailUrl ? (
+                  <div
+                    style={{
+                      marginBottom: 20,
+                      borderRadius: 14,
+                      overflow: "hidden",
+                      border: "1px solid var(--border)",
+                      background: "var(--overlay-1)",
+                      height: 160,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}
+                  >
+                    <img
+                      src={project.thumbnailUrl}
+                      alt={project.title}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        display: "block"
+                      }}
+                    />
+                  </div>
+                ) : null}
                 <h3 style={{ 
                   marginBottom: 12, 
                   fontSize: "22px",
@@ -661,21 +1147,217 @@ export default function Home() {
                   {project.desc}
                 </p>
               </div>
-              <button
+              <div
                 style={{
                   alignSelf: "flex-start",
-                  padding: "10px 24px",
-                  fontSize: "14px",
-                  background: "var(--link-hover-bg)",
-                  border: "1px solid var(--border-strong)",
-                  color: "var(--accent)"
+                  display: "flex",
+                  gap: 12,
+                  marginTop: 24,
+                  flexWrap: "wrap"
                 }}
               >
-                View Project →
-              </button>
+                {project.demoUrl && (
+                  <a
+                    href={project.demoUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <button
+                      type="button"
+                      style={{
+                        padding: "10px 24px",
+                        fontSize: "14px",
+                        background: "var(--link-hover-bg)",
+                        border: "1px solid var(--border-strong)",
+                        color: "var(--accent)"
+                      }}
+                    >
+                      Live Demo
+                    </button>
+                  </a>
+                )}
+                {project.githubUrl && (
+                  <a
+                    href={project.githubUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <button
+                      type="button"
+                      style={{
+                        padding: "10px 24px",
+                        fontSize: "14px",
+                        background: "transparent",
+                        border: "1px solid var(--border-strong)",
+                        color: "var(--accent)"
+                      }}
+                    >
+                      View Code
+                    </button>
+                  </a>
+                )}
+              </div>
+              {isAdmin && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 16,
+                    right: 16,
+                    display: "flex",
+                    gap: 8
+                  }}
+                >
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEditingProjectIndex(index);
+                      setNewProjectTitle(project.title || "");
+                      setNewProjectDesc(project.desc || "");
+                      setNewProjectGithub(project.githubUrl || "");
+                      setNewProjectDemo(project.demoUrl || "");
+                      setNewProjectThumbnail(project.thumbnailUrl || "");
+                      const section = document.getElementById("projects");
+                      if (section) {
+                        const rect = section.getBoundingClientRect();
+                        const offset = window.scrollY + rect.top - 100;
+                        window.scrollTo({ top: offset, behavior: "smooth" });
+                      }
+                    }}
+                    style={{
+                      padding: "6px 10px",
+                      fontSize: "11px",
+                      borderRadius: "999px",
+                      background: "rgba(0,0,0,0.4)",
+                      border: "1px solid var(--border)",
+                      color: "var(--text-primary)",
+                      cursor: "pointer"
+                    }}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveProject(index)}
+                    style={{
+                      padding: "6px 10px",
+                      fontSize: "11px",
+                      borderRadius: "999px",
+                      background: "rgba(0,0,0,0.4)",
+                      border: "1px solid var(--border)",
+                      color: "var(--text-primary)",
+                      cursor: "pointer"
+                    }}
+                  >
+                    Remove
+                  </button>
+                </div>
+              )}
             </Motion.div>
           ))}
         </Motion.div>
+
+        {isAdmin && (
+          <div
+            style={{
+              marginTop: 40,
+              maxWidth: 600,
+              marginInline: "auto",
+              padding: 24,
+              borderRadius: 16,
+              background: "var(--card-surface)",
+              border: "1px solid var(--border)",
+              boxShadow: "var(--shadow-md)"
+            }}
+          >
+            <h3
+              style={{
+                marginBottom: 16,
+                fontSize: 18,
+                fontWeight: 600,
+                color: "var(--text-primary)"
+              }}
+            >
+              {editingProjectIndex !== null ? "Admin: Edit Project" : "Admin: Add Project"}
+            </h3>
+            <form
+              onSubmit={handleAddProject}
+              style={{ display: "grid", gap: 12 }}
+            >
+              <input
+                placeholder="Project title"
+                value={newProjectTitle}
+                onChange={(e) => setNewProjectTitle(e.target.value)}
+                style={{
+                  padding: "12px 16px",
+                  borderRadius: 12,
+                  border: "1px solid var(--border)",
+                  background: "var(--card-surface)",
+                  color: "var(--text-primary)",
+                  fontSize: 14
+                }}
+              />
+              <textarea
+                placeholder="Short description"
+                rows={3}
+                value={newProjectDesc}
+                onChange={(e) => setNewProjectDesc(e.target.value)}
+                style={{
+                  padding: "12px 16px",
+                  borderRadius: 12,
+                  border: "1px solid var(--border)",
+                  background: "var(--card-surface)",
+                  color: "var(--text-primary)",
+                  fontSize: 14,
+                  resize: "vertical"
+                }}
+              />
+              <input
+                placeholder="Thumbnail image URL (optional)"
+                value={newProjectThumbnail}
+                onChange={(e) => setNewProjectThumbnail(e.target.value)}
+                style={{
+                  padding: "12px 16px",
+                  borderRadius: 12,
+                  border: "1px solid var(--border)",
+                  background: "var(--card-surface)",
+                  color: "var(--text-primary)",
+                  fontSize: 14
+                }}
+              />
+              <input
+                placeholder="GitHub URL"
+                value={newProjectGithub}
+                onChange={(e) => setNewProjectGithub(e.target.value)}
+                style={{
+                  padding: "12px 16px",
+                  borderRadius: 12,
+                  border: "1px solid var(--border)",
+                  background: "var(--card-surface)",
+                  color: "var(--text-primary)",
+                  fontSize: 14
+                }}
+              />
+              <input
+                placeholder="Demo URL"
+                value={newProjectDemo}
+                onChange={(e) => setNewProjectDemo(e.target.value)}
+                style={{
+                  padding: "12px 16px",
+                  borderRadius: 12,
+                  border: "1px solid var(--border)",
+                  background: "var(--card-surface)",
+                  color: "var(--text-primary)",
+                  fontSize: 14
+                }}
+              />
+              <button type="submit" style={{ alignSelf: "flex-end" }}>
+                Add Project
+              </button>
+            </form>
+          </div>
+        )}
       </Section>
 
       {/* REVIEWS SECTION */}
@@ -691,23 +1373,7 @@ export default function Home() {
             gap: 32
           }}
         >
-          {[
-            {
-              name: "Ava K.",
-              role: "CEO, TechCorp",
-              text: "Their attention to performance and detail made a huge difference for our conversion rates. The 3D elements are stunning and load instantly."
-            },
-            {
-              name: "Liam N.",
-              role: "Founder, StartupXYZ",
-              text: "The 3D elements are tasteful and fast. Our site finally feels alive. The team delivered exactly what we envisioned and more."
-            },
-            {
-              name: "Noah P.",
-              role: "Director, DesignStudio",
-              text: "Smooth delivery, great communication, and a beautiful result. Highly recommended. They transformed our vision into reality."
-            }
-          ].map((review, index) => (
+          {reviews.map((review, index) => (
             <Motion.div
               key={index}
               variants={itemVariants}
@@ -753,9 +1419,102 @@ export default function Home() {
                   {review.role}
                 </p>
               </div>
+              {isAdmin && (
+                <button
+                  type="button"
+                  onClick={() => handleRemoveReview(index)}
+                  style={{
+                    position: "absolute",
+                    top: 16,
+                    right: 16,
+                    padding: "6px 10px",
+                    fontSize: "11px",
+                    borderRadius: "999px",
+                    background: "rgba(0,0,0,0.4)",
+                    border: "1px solid var(--border)",
+                    color: "var(--text-primary)",
+                    cursor: "pointer"
+                  }}
+                >
+                  Remove
+                </button>
+              )}
             </Motion.div>
           ))}
         </Motion.div>
+
+        <div
+          style={{
+            marginTop: 40,
+            maxWidth: 600,
+            marginInline: "auto",
+            padding: 24,
+            borderRadius: 16,
+            background: "var(--card-surface)",
+            border: "1px solid var(--border)",
+            boxShadow: "var(--shadow-md)"
+          }}
+        >
+          <h3
+            style={{
+              marginBottom: 16,
+              fontSize: 18,
+              fontWeight: 600,
+              color: "var(--text-primary)"
+            }}
+          >
+            Share Your Experience
+          </h3>
+          <form
+            onSubmit={handleAddReview}
+            style={{ display: "grid", gap: 12 }}
+          >
+            <input
+              placeholder="Your name"
+              value={newReviewName}
+              onChange={(e) => setNewReviewName(e.target.value)}
+              style={{
+                padding: "12px 16px",
+                borderRadius: 12,
+                border: "1px solid var(--border)",
+                background: "var(--card-surface)",
+                color: "var(--text-primary)",
+                fontSize: 14
+              }}
+            />
+            <input
+              placeholder="Role / Company"
+              value={newReviewRole}
+              onChange={(e) => setNewReviewRole(e.target.value)}
+              style={{
+                padding: "12px 16px",
+                borderRadius: 12,
+                border: "1px solid var(--border)",
+                background: "var(--card-surface)",
+                color: "var(--text-primary)",
+                fontSize: 14
+              }}
+            />
+            <textarea
+              placeholder="Your review"
+              rows={4}
+              value={newReviewText}
+              onChange={(e) => setNewReviewText(e.target.value)}
+              style={{
+                padding: "12px 16px",
+                borderRadius: 12,
+                border: "1px solid var(--border)",
+                background: "var(--card-surface)",
+                color: "var(--text-primary)",
+                fontSize: 14,
+                resize: "vertical"
+              }}
+            />
+            <button type="submit" style={{ alignSelf: "flex-end" }}>
+              Add Review
+            </button>
+          </form>
+        </div>
       </Section>
 
       {/* CONTACT SECTION */}
@@ -866,6 +1625,155 @@ export default function Home() {
           </form>
         </Motion.div>
       </Section>
+      <div
+        style={{
+          position: "fixed",
+          bottom: 24,
+          right: 24,
+          zIndex: 50
+        }}
+      >
+        {!isAdmin ? (
+          showAdminLogin ? (
+            <div
+              style={{
+                padding: 16,
+                borderRadius: 16,
+                background: "var(--card-surface)",
+                border: "1px solid var(--border)",
+                boxShadow: "var(--shadow-md)",
+                minWidth: 260
+              }}
+            >
+              <h4
+                style={{
+                  marginBottom: 12,
+                  fontSize: 14,
+                  fontWeight: 600,
+                  color: "var(--text-primary)"
+                }}
+              >
+                Admin Login
+              </h4>
+              <form
+                onSubmit={handleAdminLogin}
+                style={{ display: "grid", gap: 10 }}
+              >
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={adminPassword}
+                  onChange={(e) => setAdminPassword(e.target.value)}
+                  style={{
+                    padding: "10px 14px",
+                    borderRadius: 12,
+                    border: "1px solid var(--border)",
+                    background: "var(--card-surface)",
+                    color: "var(--text-primary)",
+                    fontSize: 13
+                  }}
+                />
+                {adminError && (
+                  <div
+                    style={{
+                      fontSize: 12,
+                      color: "#ff6b6b"
+                    }}
+                  >
+                    {adminError}
+                  </div>
+                )}
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    gap: 8,
+                    marginTop: 4
+                  }}
+                >
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowAdminLogin(false);
+                      setAdminPassword("");
+                      setAdminError("");
+                    }}
+                    style={{
+                      padding: "6px 12px",
+                      fontSize: 12,
+                      background: "transparent",
+                      border: "1px solid var(--border)",
+                      color: "var(--text-secondary)"
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    style={{ padding: "6px 12px", fontSize: 12 }}
+                  >
+                    Login
+                  </button>
+                </div>
+              </form>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setShowAdminLogin(true)}
+              style={{
+                padding: "8px 14px",
+                fontSize: 12,
+                borderRadius: 999,
+                background: "var(--card-surface)",
+                border: "1px solid var(--border)",
+                color: "var(--text-secondary)",
+                boxShadow: "var(--shadow-md)",
+                cursor: "pointer"
+              }}
+            >
+              Admin Login
+            </button>
+          )
+        ) : (
+          <div
+            style={{
+              padding: 10,
+              borderRadius: 999,
+              background: "var(--card-surface)",
+              border: "1px solid var(--border)",
+              boxShadow: "var(--shadow-md)",
+              display: "flex",
+              alignItems: "center",
+              gap: 8
+            }}
+          >
+            <span
+              style={{
+                fontSize: 12,
+                color: "var(--text-secondary)"
+              }}
+            >
+              Admin mode
+            </span>
+            <button
+              type="button"
+              onClick={handleAdminLogout}
+              style={{
+                padding: "6px 10px",
+                fontSize: 12,
+                borderRadius: 999,
+                background: "transparent",
+                border: "1px solid var(--border)",
+                color: "var(--text-secondary)",
+                cursor: "pointer"
+              }}
+            >
+              Logout
+            </button>
+          </div>
+        )}
+      </div>
     </main>
   );
 }
